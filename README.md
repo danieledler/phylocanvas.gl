@@ -1,19 +1,19 @@
-# Phylocanvas.gl
+# About Phylocanvas.gl
 
 
-## What is Phylocanvas.gl?
+## Q1: What is Phylocanvas.gl?
 
 A WebGL-powered JavaScript library for large tree visualisation, scaling to hundreds of thousands of leaves.
 
 
-## Is this the new version of [Phylocanvas](https://www.npmjs.com/package/phylocanvas)?
+## Q2: Is this the new version of [Phylocanvas](https://www.npmjs.com/package/phylocanvas)?
 
 No, Phylocanvas.gl is a completely new library for tree visualisation, written to incorporate WebGL.
 This is not version 3 of [the Phylocanvas](https://www.npmjs.com/package/phylocanvas).
 
 
 
-## Why yet another library?
+## Q3: Why yet another library?
 
 
 |  | Phylocanvas | Phylocanvas.gl |
@@ -26,13 +26,13 @@ This is not version 3 of [the Phylocanvas](https://www.npmjs.com/package/phyloca
 | NPM Package | <https://www.npmjs.com/package/phylocanvas> | <https://www.npmjs.com/package/@phylocanvas/phylocanvas.gl> |
 
 
-## Where can I find Documentation?
+## Q4: Where can I find Documentation?
 
 Examples and API documentation at [https://www.phylocanvas.gl/](https://www.phylocanvas.gl/).
 
 
 
-## Does Phylocanvas.gl work without WebGL? 
+## Q5: Does Phylocanvas.gl work without WebGL? 
 
 No, Phylocanvas.gl only works on web browsers which support WebGL.
 Rendering using [Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API) is slow and does not scale to trees with hundreds of thousands of leaves.
@@ -43,12 +43,12 @@ Consider upgrading your browser if you get the following error when creating a n
 `WebGL context: WebGL is currently disabled`.
 
 
-## I found a bug, where can I report it?
+## Q6: I found a bug, where can I report it?
 
 For bugs and suggestions, please raise an issue on <https://gitlab.com/cgps/phylocanvas/support>.
 
 
-## Can I fork Phylocanvas.gl?
+## Q7: Can I fork Phylocanvas.gl?
 
 Phylocanvas is primarily designed to be incorporated into CGPS software that display phylogenies. The scope of Phylocanvas is limited to the software tools of CGPS and, for this purpose, it is considered to be feature complete.
 
