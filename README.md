@@ -9,7 +9,7 @@ A WebGL-powered JavaScript library for large tree visualisation, scaling to hund
 ## Q2: Is this the new version of [Phylocanvas](https://www.npmjs.com/package/phylocanvas)?
 
 No, Phylocanvas.gl is a completely new library for tree visualisation, written to incorporate WebGL.
-This is not version 3 of [the Phylocanvas](https://www.npmjs.com/package/phylocanvas).
+This is not version 3 of [Phylocanvas](https://www.npmjs.com/package/phylocanvas).
 
 
 
@@ -26,7 +26,7 @@ This is not version 3 of [the Phylocanvas](https://www.npmjs.com/package/phyloca
 | NPM Package | <https://www.npmjs.com/package/phylocanvas> | <https://www.npmjs.com/package/@phylocanvas/phylocanvas.gl> |
 
 
-## Q4: Where can I find Documentation?
+## Q4: Where can I find documentation?
 
 Examples and API documentation at [https://www.phylocanvas.gl/](https://www.phylocanvas.gl/).
 
