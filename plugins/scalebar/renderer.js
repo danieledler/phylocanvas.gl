@@ -1,24 +1,31 @@
-import branchScaleSelector from "../../selectors/branch-scale";
 import memoise from "../../utils/memoise";
-import scaleSelector from "../../selectors/scale";
-import sizeSelector from "../../selectors/size";
-import fontFamilySelector from "../../selectors/fontFamily";
-import viewportCentreSelector from "../../selectors/viewportCentre";
-import canvasCentreSelector from "../../selectors/canvasCentre";
 
 import ScalebarLayer from "./scalebar-layer";
-import scalebarOptionsSelector from "./options-selector";
+import scalebarOptionsSelector from "./options";
 
 const LOG10 = Math.log(10);
 
+const canvasCentreSelector = memoise(
+  (tree) => tree.getCanvasSize(),
+  (
+    size,
+  ) => {
+    const canvasCentre = [
+      size.width / 2,
+      size.height / 2,
+    ];
+    return canvasCentre;
+  }
+);
+
 export default memoise(
   scalebarOptionsSelector,
-  branchScaleSelector,
-  scaleSelector,
-  sizeSelector,
-  fontFamilySelector,
+  (tree) => tree.getBranchScale(),
+  (tree) => tree.getScale(),
+  (tree) => tree.getCanvasSize(),
+  (tree) => tree.getFontFamily(),
   canvasCentreSelector,
-  viewportCentreSelector,
+  (tree) => tree.getView().target,
   (
     options,
     branchScale,

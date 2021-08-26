@@ -21,10 +21,9 @@
 
 import memoise from "../../utils/memoise";
 
-import fontSizeSelector from "../../selectors/fontSize";
 
 export default memoise(
-  fontSizeSelector,
+  (tree) => tree.getFontSize(),
   (
     fontSize,
   ) => {

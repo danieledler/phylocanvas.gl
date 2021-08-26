@@ -21,6 +21,6 @@
 
 /* eslint-disable no-restricted-properties */
 
-export default function (zoom) {
+export default function zoomToScale(zoom) {
   return Math.pow(2, zoom);
 }

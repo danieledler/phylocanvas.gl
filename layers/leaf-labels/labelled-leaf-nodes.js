@@ -22,41 +22,33 @@
 import { TreeTypes, Angles } from "../../constants";
 import memoise from "../../utils/memoise";
 
-import branchScaleSelector from "../../selectors/branch-scale";
-import fontSizeSelector from "../../selectors/fontSize";
-import nodesSelector from "../../selectors/graph";
-import styledNodesSelector from "../../selectors/styled-nodes";
-import scaleSelector from "../../selectors/scale";
-import stepScaleSelector from "../../selectors/step-scale";
-import treeTypeSelector from "../../selectors/treeType";
-
 const leavesPerLabelSelector = memoise(
-  treeTypeSelector,
-  nodesSelector,
-  branchScaleSelector,
-  stepScaleSelector,
-  scaleSelector,
-  fontSizeSelector,
+  (tree) => tree.getTreeType(),
+  (tree) => tree.getGraphAfterLayout(),
+  (tree) => tree.getBranchScale(),
+  (tree) => tree.getStepScale(),
+  (tree) => tree.getScale(),
+  (tree) => tree.getFontSize(),
   (
     treeType,
-    { nodes },
+    graph,
     branchScale,
     stepScale,
     scale,
     fontSize,
   ) => {
     if (treeType === TreeTypes.Circular || treeType === TreeTypes.Radial) {
-      const radius = (nodes.root.totalSubtreeLength * branchScale) * scale;
+      const radius = (graph.root.totalSubtreeLength * branchScale) * scale;
       const chordLength = fontSize * 0.75;
       const angle = 2 * Math.asin(chordLength / (2 * radius));
       const maxNumOfLabels = Math.floor(Angles.Degrees360 / angle);
-      const leavesPerLabel = Math.ceil(nodes.root.totalLeaves / maxNumOfLabels);
+      const leavesPerLabel = Math.ceil(graph.root.totalLeaves / maxNumOfLabels);
       return leavesPerLabel;
     }
     else {
       // Calculate the total tree length in pixels
       const treeLength = (
-        nodes.root.totalLeaves // number of leaves
+        graph.root.totalLeaves // number of leaves
         *
         stepScale // pixel per leaf node
         *
@@ -68,7 +60,7 @@ const leavesPerLabelSelector = memoise(
       const maxNumOfLabels = treeLength / fontSize;
 
       // Finally calculate the number of leaf nodes per one label
-      const leavesPerLabel = nodes.root.totalLeaves / maxNumOfLabels;
+      const leavesPerLabel = graph.root.totalLeaves / maxNumOfLabels;
 
       if (leavesPerLabel <= 1) {
         return 1;
@@ -82,20 +74,20 @@ const leavesPerLabelSelector = memoise(
 );
 
 const labelledLeafNodesSelector = memoise(
-  styledNodesSelector,
-  treeTypeSelector,
+  (tree) => tree.getGraphWithStyles(),
+  (tree) => tree.getTreeType(),
   leavesPerLabelSelector,
   (
-    { nodes },
+    graph,
     type,
     leavesPerLabel,
   ) => {
     if (leavesPerLabel <= 1) {
-      return [ ...nodes.leaves ];
+      return [ ...graph.leaves ];
     }
 
     const lastIndex = (
-      nodes.leaves.length
+      graph.leaves.length
       -
       (
         (type === TreeTypes.Circular || type === TreeTypes.Radial)
@@ -106,9 +98,9 @@ const labelledLeafNodesSelector = memoise(
       )
     );
     const nodesWithLabels = [];
-    for (let index = 0; index < nodes.leaves.length; index++) {
+    for (let index = 0; index < graph.leaves.length; index++) {
       if (index < lastIndex && index % leavesPerLabel === 0) {
-        const node = nodes.leaves[index];
+        const node = graph.leaves[index];
         nodesWithLabels.push(node);
       }
     }
@@ -116,5 +108,6 @@ const labelledLeafNodesSelector = memoise(
     return nodesWithLabels;
   }
 );
+labelledLeafNodesSelector.displayName = "labelled-leaf-nodes";
 
 export default labelledLeafNodesSelector;

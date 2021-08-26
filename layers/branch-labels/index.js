@@ -22,8 +22,6 @@
 import { TextLayer } from "@deck.gl/layers";
 
 import fontColourSelector from "./font-colour";
-import fontFamilySelector from "../../selectors/fontFamily";
-import fontSizeSelector from "../../selectors/fontSize";
 import internalNodesSelector from "./internal-nodes";
 import pixelOffsetAccessorSelector from "./pixel-offset-accessor";
 import positionAccessorSelector from "./position-accessor";
@@ -41,8 +39,8 @@ function getFixedText(datum) {
 
 export default memoise(
   internalNodesSelector,
-  fontSizeSelector,
-  fontFamilySelector,
+  (tree) => tree.getFontSize(),
+  (tree) => tree.getFontFamily(),
   fontColourSelector,
   pixelOffsetAccessorSelector,
   (tree) => tree.props.exponentialBranchLengths,

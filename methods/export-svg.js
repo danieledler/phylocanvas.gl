@@ -19,12 +19,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import viewportCentreSelector from "../selectors/viewportCentre";
 import labelledLeafNodesSelector from "../layers/leaf-labels/labelled-leaf-nodes";
 import textPositionAccessorSelector from "../layers/leaf-labels/text-position-accessor";
 
 import shapeBorderWidthSelector from "../layers/shapes/shape-border-width";
 import shapeBorderColourSelector from "../layers/shapes/border-colour";
+
+import lineColourSelector from "../layers/edges/line-colour";
 
 import drawVectorShape from "../utils/draw-vector-shape";
 
@@ -57,18 +58,18 @@ function describeArc(x, y, radius, startAngle, endAngle) {
 }
 
 export default function exportSVG() {
-  const nodes = this.graph();
+  const nodes = this.getGraphAfterLayout();
   const size = this.getCanvasSize();
   const type = this.getTreeType();
   const nodeSize = this.getNodeSize();
   const nodeRadius = nodeSize * 0.5;
-  const viewportCentre = viewportCentreSelector(this);
+  const view = this.getView(this);
   const canvasCentre = this.getCanvasCentrePoint();
   const svg = [];
 
   const centre = [
-    canvasCentre[0] + viewportCentre[0],
-    canvasCentre[1] + viewportCentre[1],
+    canvasCentre[0] + view.target[0],
+    canvasCentre[1] + view.target[1],
   ];
 
   svg.push(`<svg viewBox="0 0 ${size.width} ${size.height}" xmlns="http://www.w3.org/2000/svg">\n`);
@@ -76,8 +77,8 @@ export default function exportSVG() {
   svg.push(`<g transform="translate(${centre.join(" ")})" >\n`);
 
   //#region Draw lines
-  const lineWidth = this.getLineWidth();
-  const lineColour = colourArrayToCssRGBA(this.getLineColour());
+  const lineWidth = this.getStrokeWidth();
+  const lineColour = colourArrayToCssRGBA(lineColourSelector(this));
 
   svg.push(`<g stroke="${lineColour}" stroke-width="${lineWidth}" >\n`);
 

@@ -21,10 +21,8 @@
 
 import memoise from "../../utils/memoise";
 
-import blockOffsetSelector from "./block-offset";
-
 export default memoise(
-  blockOffsetSelector,
+  (tree) => tree.getPixelOffsets().length,
   (
     blockOffset,
   ) => {

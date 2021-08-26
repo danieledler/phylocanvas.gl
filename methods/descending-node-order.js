@@ -22,7 +22,7 @@
 import serialiseAsNewick from "../utils/serialise-as-newick";
 
 export default function descendingNodeOrder() {
-  const nodes = this.graph();
+  const nodes = this.getGraphAfterLayout();
 
   for (const node of nodes.postorderTraversal) {
     if (node.children) {

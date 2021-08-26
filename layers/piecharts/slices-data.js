@@ -25,13 +25,11 @@ import defaults from "../../defaults";
 
 import memoise from "../../utils/memoise";
 
-import styledNodesSelector from "../../selectors/styled-nodes";
-
 export default memoise(
-  styledNodesSelector,
+  (tree) => tree.getGraphWithStyles(),
   (tree) => tree.props.collapsedIds || defaults.collapsedIds,
   (
-    { nodes },
+    graph,
     collapsedIds,
   ) => {
     const piechartSlices = [];
@@ -39,14 +37,14 @@ export default memoise(
     let totalLeaves = 0;
 
     for (const nodeId of collapsedIds) {
-      const node = nodes.ids[nodeId];
+      const node = graph.ids[nodeId];
       if (!node.isHidden) {
         const firstIndex = node.postIndex - node.totalNodes + 1;
         const lastIndex = node.postIndex;
         const slices = new Map();
         let numberOfActiveLeaves = 0;
         for (let i = firstIndex; i <= lastIndex; i++) {
-          const childNode = nodes.postorderTraversal[i];
+          const childNode = graph.postorderTraversal[i];
           if (childNode.isLeaf && childNode.shape) {
             numberOfActiveLeaves += 1;
             slices.set(childNode.fillColour, (slices.get(childNode.fillColour) || 0) + 1);
@@ -73,7 +71,7 @@ export default memoise(
 
     const k = 1 / Math.log10(totalLeaves);
     for (const nodeId of collapsedIds) {
-      const node = nodes.ids[nodeId];
+      const node = graph.ids[nodeId];
       if (!node.isHidden) {
         node.ratio = k * Math.log10(node.numberOfActiveLeaves);
       }

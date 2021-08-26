@@ -23,18 +23,17 @@ import defaults from "../../defaults";
 
 import memoise from "../../utils/memoise";
 
-import nodesSelector from "../../selectors/graph";
 import { EmptyArray } from "../../constants";
 
 export default memoise(
-  nodesSelector,
+  (tree) => tree.getGraphAfterLayout(),
   (tree) => tree.props.highlightedId ?? defaults.highlightedId,
   (
-    { nodes },
+    graph,
     highlightedId,
   ) => {
     if ((highlightedId ?? undefined) !== undefined) {
-      const node = nodes.ids[highlightedId];
+      const node = graph.ids[highlightedId];
       return [ node ];
     }
     return EmptyArray;

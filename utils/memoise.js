@@ -24,71 +24,76 @@
 /* eslint-disable prefer-spread */
 /* eslint prefer-rest-params: 0 */
 
-let total = 0;
-
 function createMemo(...dependencies) {
   const resultFunc = dependencies.pop();
 
-  let lastProps = null;
-  let lastArgs = null;
-  let lastResult = null;
+  let previousProps = null;
+  let previousArguments = null;
+  let previousResults = null;
+
   const selector = function (context) {
-    if (lastProps === null || context.props === null || lastProps !== context.props) {
-      const args = [];
+    if (previousProps === null || context.props === null || previousProps !== context.props) {
+      const currentArguments = [];
 
       for (let i = 0; i < dependencies.length; i++) {
-        args.push(dependencies[i].call(null, context));
+        currentArguments.push(dependencies[i].call(null, context));
       }
 
-      args.push(context);
+      currentArguments.push(context);
 
-      let recompute = false;
-      if (lastArgs === null || args === null || lastArgs.length !== args.length) {
-        recompute = true;
-      } else {
-        for (let i = 0; i < args.length; i++) {
-          if ((lastArgs[i] !== args[i])) {
-            recompute = true;
+      let shouldUpdate = false;
+      if (
+        previousArguments === null
+        ||
+        currentArguments === null
+      ) {
+        shouldUpdate = true;
+      }
+      else {
+        for (let i = 0; i < currentArguments.length; i++) {
+          if ((previousArguments[i] !== currentArguments[i])) {
+            shouldUpdate = true;
             break;
           }
         }
       }
-      if (recompute) {
-        const t0 = performance.now();
-        lastResult = resultFunc.apply(null, args);
-        const t1 = performance.now();
-        if (selector.displayName) {
-          total += (t1 - t0);
-          context.log && context.log("selector %s took:", selector.displayName, t1 - t0, /* total */);
+      if (shouldUpdate) {
+        if (context.log && selector.displayName) {
+          const t0 = performance.now();
+          previousResults = resultFunc.apply(null, currentArguments);
+          const t1 = performance.now();
+          context.log("selector %s took:", selector.displayName, t1 - t0);
+        }
+        else {
+          previousResults = resultFunc.apply(null, currentArguments);
         }
       }
 
-      lastArgs = args;
+      previousArguments = currentArguments;
     }
 
-    lastProps = context.props;
-    return lastResult;
+    previousProps = context.props;
+    return previousResults;
   };
+
   return selector;
 }
 
 export default function memoise() {
-  const cache = new WeakMap();
-
   const dependencies = arguments;
+  const key = Symbol("selector");
 
   const selector = function (tree) {
-    let cachedSelector = cache.get(tree);
+    let cachedSelector = tree.cache.get(key);
 
     if (cachedSelector === undefined) {
       cachedSelector = createMemo.apply(null, dependencies);
       cachedSelector.displayName = selector.displayName;
-      cache.set(tree, cachedSelector);
+      tree.cache.set(key, cachedSelector);
     }
 
     return cachedSelector.apply(null, arguments);
   };
-  selector.cache = cache;
 
   return selector;
 }

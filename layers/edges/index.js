@@ -20,30 +20,27 @@
 // THE SOFTWARE.
 
 import memoise from "../../utils/memoise";
-import lineWidthSelector from "../../selectors/line-width";
 
-import arcsDataSelector from "./arcs-data";
-import linesDataSelector from "./lines-data";
 import colourAccessorSelector from "./colour-accessor";
 
 import EdgesLayer from "./edges-layer";
 
 export default memoise(
-  arcsDataSelector,
-  linesDataSelector,
-  lineWidthSelector,
+  (tree) => tree.getGraphAfterLayout(),
+  (tree) => tree.getTreeType(),
+  (tree) => tree.getStrokeWidth(),
   colourAccessorSelector,
   (
-    arcs,
-    lines,
+    graph,
+    treeType,
     lineWidth,
     colourAccessor,
   ) => {
     return new EdgesLayer({
-      arcs,
+      treeType,
       getColor: colourAccessor,
       id: "edges",
-      lines,
+      data: graph,
       lineWidth,
     });
   }

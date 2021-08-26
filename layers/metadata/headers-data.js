@@ -23,38 +23,32 @@ import { Angles } from "../../constants";
 
 import memoise from "../../utils/memoise";
 
-import branchScaleSelector from "../../selectors/branch-scale";
-import metadataBlockLengthSelector from "../../selectors/metadataBlockLength";
-import metadataColumnWidthSelector from "../../selectors/metadataColumnWidth";
-import styledNodesSelector from "../../selectors/styled-nodes";
-import showMetadataLabelsSelector from "../../selectors/showMetadataLabels";
-
 export default memoise(
-  styledNodesSelector,
+  (tree) => tree.getGraphWithStyles(),
   (tree) => tree.getAlignLeafLabels(),
-  showMetadataLabelsSelector,
+  (tree) => tree.hasMetadataLabels(),
   (tree) => tree.props.blocks,
-  metadataColumnWidthSelector,
-  branchScaleSelector,
-  metadataBlockLengthSelector,
+  (tree) => tree.getMetadataColumnWidth(),
+  (tree) => tree.getBranchScale(),
+  (tree) => tree.getBlockSize(),
   (
-    { nodes },
+    graph,
     shouldAlignLabels,
     hasMetadataLabels,
     metadataColumns,
-    columnWidths,
+    columnWidth,
     branchScale,
-    blockLength,
+    blockSize,
   ) => {
     const data = [];
 
-    const firstLeaf = nodes.postorderTraversal[nodes.root.postIndex - nodes.root.totalNodes + 1];
+    const firstLeaf = graph.postorderTraversal[graph.root.postIndex - graph.root.totalNodes + 1];
     const inverted = (firstLeaf.angle > Angles.Degrees90) && (firstLeaf.angle < Angles.Degrees270);
 
     const nodePositionOffset = (
       shouldAlignLabels
         ?
-        (branchScale * (nodes.root.totalSubtreeLength - firstLeaf.distanceFromRoot))
+        (branchScale * (graph.root.totalSubtreeLength - firstLeaf.distanceFromRoot))
         :
         0
     );
@@ -70,10 +64,9 @@ export default memoise(
     }
 
     let xOffset = 0;
-    const offsetY = -blockLength;
+    const offsetY = -blockSize;
     for (let index = 0; index < metadataColumns.length; index++) {
       const columnName = metadataColumns[index];
-      const columnWidth = columnWidths[columnName];
 
       data.push({
         node: firstLeaf,

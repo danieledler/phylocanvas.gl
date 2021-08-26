@@ -20,14 +20,15 @@
 // THE SOFTWARE.
 
 import { TreeTypes } from "../constants";
+import defaults from "../defaults";
 
-export default function getAlignLeafLabels(tree) {
-  const treeType = tree.getTreeType();
+export default function getAlignLeafLabels() {
+  const treeType = this.getTreeType();
   switch (treeType) {
     case TreeTypes.Circular:
     case TreeTypes.Hierarchical:
     case TreeTypes.Rectangular:
-      return alignLabels;
+      return this.props.alignLabels || defaults.alignLabels;
 
     case TreeTypes.Diagonal:
     case TreeTypes.Radial:
@@ -36,4 +37,4 @@ export default function getAlignLeafLabels(tree) {
     default:
       return undefined;
   }
-};
+}

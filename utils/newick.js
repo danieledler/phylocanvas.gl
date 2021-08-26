@@ -58,8 +58,6 @@
  * }
  */
 
-
-
 module.exports.parse_newick = function (s) {
 	var ancestors = [];
 	var tree = {};

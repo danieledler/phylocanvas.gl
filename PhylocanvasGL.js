@@ -59,26 +59,6 @@ function init(tree) {
   tree.view.style.backgroundRepeat = "no-repeat";
   tree.view.style.backgroundPosition = "right bottom";
 
-  // const link = document.createElement("a");
-  // link.href = "https://phylocanvas.gl/";
-  // link.target = "_blank";
-  // link.style.position = "absolute";
-  // link.style.bottom = "2px";
-  // link.style.right = "2px";
-  // link.style.fontSize = "10px";
-  // link.style.color = "#000000bf";
-  // link.style.backgroundColor = "#ffffff80";
-  // link.style.textDecoration = "none";
-  // link.style.fontWeight = "500";
-  // link.style.fontFamily = "Helvetica Neue, Arial, Helvetica, sans-serif";
-  // const image = document.createElement("img");
-  // image.src = "https://phylocanvas.org/img/phylo.icon.final.png";
-  // image.width = "14";
-  // image.style.verticalAlign = "middle";
-  // link.appendChild(image);
-  // link.appendChild(document.createTextNode("Phylocanvas.gl"));
-  // tree.view.appendChild(link);
-
   tree.addLayer(
     "edges",
     (props) => (props.showEdges ?? defaults.showEdges),
@@ -86,15 +66,15 @@ function init(tree) {
   );
 
   tree.addLayer(
-    "shapes",
-    (props) => (props.showShapes ?? defaults.showShapes),
-    renderShapes,
-  );
-
-  tree.addLayer(
     "leaf-labels",
     (props) => props.showLabels && props.showLeafLabels,
     renderLeafLabels,
+  );
+
+  tree.addLayer(
+    "shapes",
+    (props) => (props.showShapes ?? defaults.showShapes),
+    renderShapes,
   );
 
   tree.addLayer(
@@ -137,6 +117,10 @@ function init(tree) {
 class PhylocanvasGL {
   constructor(view = document.body, props, plugins = []) {
     const domElemment = (typeof view === "string") ? document.getElementById(view) : view;
+
+    this.cache = new Map();
+    this.cache2 = new Map();
+    this.cache3 = new Map();
 
     this.view = domElemment;
     this.deferred = {

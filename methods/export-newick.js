@@ -20,7 +20,7 @@
 // THE SOFTWARE.
 
 export default function exportNewick(nodeOrId, options = {}) {
-  const nodes = this.graph();
+  const nodes = this.getGraphAfterLayout();
   const rootNode = nodeOrId ? this.findNodeById(nodeOrId) : nodes.root;
   const { excludeCollapsed = true } = options;
 

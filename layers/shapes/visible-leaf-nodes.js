@@ -21,15 +21,13 @@
 
 import memoise from "../../utils/memoise";
 
-import styledNodesSelector from "../../selectors/styled-nodes";
-
 const visibleLeafNodesSelector = memoise(
-  styledNodesSelector,
+  (tree) => tree.getGraphWithStyles(),
   (
-    { nodes },
+    graph,
   ) => {
     const visibleNodes = [];
-    for (const node of nodes.leaves) {
+    for (const node of graph.leaves) {
       if (!node.isHidden && node.shape) {
         visibleNodes.push(node);
       }

@@ -23,10 +23,8 @@ import defaults from "../../defaults";
 
 import memoise from "../../utils/memoise";
 
-import strokeColourSelector from "../../selectors/strokeColour";
-
 export default memoise(
-  strokeColourSelector,
+  (tree) => tree.getStrokeColour(),
   (tree) => tree.props.shapeBorderAlpha ?? defaults.shapeBorderAlpha,
   (
     strokeColour,

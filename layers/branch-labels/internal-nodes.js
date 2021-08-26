@@ -21,17 +21,15 @@
 
 import memoise from "../../utils/memoise";
 
-import nodesSelector from "../../selectors/graph";
-
 const internaNodesSelector = memoise(
-  nodesSelector,
+  (tree) => tree.getGraphAfterLayout(),
   (
-    { nodes },
+    graph,
   ) => {
     const labels = [];
 
-    for (let i = nodes.firstIndex + 1; i < nodes.lastIndex; i++) {
-      const node = nodes.preorderTraversal[i];
+    for (let i = graph.firstIndex + 1; i < graph.lastIndex; i++) {
+      const node = graph.preorderTraversal[i];
       labels.push(node);
 
       // skip collapsed sub-trees

@@ -19,8 +19,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import viewStateSelector from "../selectors/viewState";
-
 export default function () {
   //#region Check if render is suspended
   if (this.deferred.count > 0) {
@@ -32,7 +30,7 @@ export default function () {
 
   const t0 = performance.now();
 
-  this.graph();
+  this.getGraphAfterLayout();
 
   const t1 = performance.now();
 
@@ -51,16 +49,9 @@ export default function () {
     }
   }
 
-  const viewState = viewStateSelector(this);
+  const viewState = this.getView();
 
   const t2 = performance.now();
-
-  // console.log(
-  //   deckglLayers[0] === this.deck.props.layers[0]
-  //   ,
-  //   deckglLayers[1] === this.deck.props.layers[1]
-  // )
-
   this.view.style.width = `${this.props.size.width}px`;
   this.view.style.height = `${this.props.size.height}px`;
 

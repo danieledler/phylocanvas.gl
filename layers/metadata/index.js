@@ -25,35 +25,34 @@ import colourToRGBA from "../../utils/colour-to-rgba";
 import blocksDataSelector from "./blocks-data";
 import headersDataSelector from "./headers-data";
 import pixelOffsetAccessorSelector from "./pixel-offset-accessor";
-import metadataBlockLengthSelector from "../../selectors/metadataBlockLength";
-import metadataHeaderStyleSelector from "../../selectors/metadataHeaderStyle";
-import showMetadataHeadersSelector from "../../selectors/show-metadata-headers";
 
 import MetadataLayer from "./metadata-layer";
 
 export default memoise(
   blocksDataSelector,
-  metadataBlockLengthSelector,
+  (tree) => tree.getBlockSize(),
   headersDataSelector,
-  metadataHeaderStyleSelector,
+  (tree) => tree.getFontFamily(),
+  (tree) => tree.getBlockHeaderFontSize(),
   pixelOffsetAccessorSelector,
-  showMetadataHeadersSelector,
+  (tree) => tree.hasMetadataHeaders(),
   (
     blockData,
-    blockLength,
+    blockSize,
     headersData,
-    metadataHeaderStyle,
+    fontFamily,
+    blockHeaderFontSize,
     pixelOffsetAccessor,
-    showMetadataHeaders,
+    hasMetadataHeaders,
   ) => {
     const layer = new MetadataLayer({
-      blockLength,
+      blockSize,
       blocks: blockData,
-      fontColour: colourToRGBA(metadataHeaderStyle.colour || "black"),
-      fontFamily: metadataHeaderStyle.fontFamily,
-      fontSize: Math.min(blockLength, metadataHeaderStyle.fontSize),
+      fontColour: colourToRGBA("black"),
+      fontFamily,
+      fontSize: Math.min(blockSize, blockHeaderFontSize),
       getPixelOffset: pixelOffsetAccessor,
-      hasHeaders: showMetadataHeaders,
+      hasHeaders: hasMetadataHeaders,
       headers: headersData,
       id: "metadata",
     });

@@ -24,19 +24,17 @@ import defaults from "../../defaults";
 import memoise from "../../utils/memoise";
 
 import borderColourSelector from "../shapes/border-colour";
-import nodeSizeSelector from "../../selectors/nodeSize";
 import slicesDataSelector from "./slices-data";
-import scaleSelector from "../../selectors/scale";
 
 import CircleSectorLayer from "./circle-sector-layer";
 
 export default memoise(
   slicesDataSelector,
-  nodeSizeSelector,
+  (tree) => tree.getNodeSize(),
   (tree) => tree.props.showShapeBorders,
   (tree) => tree.props.shapeBorderWidth ?? defaults.shapeBorderWidth,
   borderColourSelector,
-  scaleSelector,
+  (tree) => tree.getScale(),
   (
     slicesData,
     nodeSize,

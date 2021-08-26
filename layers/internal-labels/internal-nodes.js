@@ -21,17 +21,15 @@
 
 import memoise from "../../utils/memoise";
 
-import nodesSelector from "../../selectors/graph";
-
 const internalLabelsSelector = memoise(
-  nodesSelector,
+  (tree) => tree.getGraphAfterLayout(),
   (
-    { nodes },
+    graph,
   ) => {
     const labels = [];
 
-    for (let i = nodes.firstIndex; i < nodes.lastIndex; i++) {
-      const node = nodes.preorderTraversal[i];
+    for (let i = graph.firstIndex; i < graph.lastIndex; i++) {
+      const node = graph.preorderTraversal[i];
 
       if (
         !node.isLeaf

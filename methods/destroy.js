@@ -23,4 +23,14 @@ export default function destroy() {
   this.deck.finalize();
   this.deck = undefined;
   delete this.deck;
+
+  this.cache.clear();
+  this.cache = undefined;
+  delete this.cache;
+
+  this.view = undefined;
+  delete this.view;
+
+  this.layers = undefined;
+  delete this.layers;
 }

@@ -25,27 +25,22 @@ import memoise from "../../utils/memoise";
 import colourToRGBA from "../../utils/colour-to-rgba";
 
 import fontColourAccessorSelector from "./font-colour-accessor";
-import fontFamilySelector from "../../selectors/fontFamily";
-import fontSizeSelector from "../../selectors/fontSize";
-import highlightedNodeSelector from "../../selectors/highlighted-node";
 import labelledNodesSelector from "./labelled-leaf-nodes";
-import lineColourSelector from "../../selectors/line-colour";
-import lineWidthSelector from "../../selectors/line-width";
 import textPositionAccessorSelector from "./text-position-accessor";
 
 import LabelsLayer from "./labels-layer";
 
 export default memoise(
   labelledNodesSelector,
-  fontSizeSelector,
-  fontFamilySelector,
+  (tree) => tree.getFontSize(),
+  (tree) => tree.getFontFamily(),
   fontColourAccessorSelector,
   (tree) => tree.props.backgroundColour || defaults.backgroundColour,
-  lineWidthSelector,
-  lineColourSelector,
+  (tree) => tree.getStrokeWidth(),
+  (tree) => tree.getStrokeColour(),
   (tree) => tree.getAlignLeafLabels(),
   textPositionAccessorSelector,
-  highlightedNodeSelector,
+  (tree) => tree.getHighlightedNode(),
   (tree) => colourToRGBA(tree.props.highlightColour ?? defaults.highlightColour),
   (
     labelledNodes,

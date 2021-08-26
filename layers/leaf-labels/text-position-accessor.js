@@ -21,21 +21,20 @@
 
 import memoise from "../../utils/memoise";
 
-import branchScaleSelector from "../../selectors/branch-scale";
-import nodeSizeSelector from "../../selectors/nodeSize";
-import rootNodeSelector from "../../selectors/root-node";
-import scaleSelector from "../../selectors/scale";
-import showShapesSelector from "../../selectors/showShapes";
+function totalSubtreeLengthSelector(tree) {
+  const graph = tree.getGraphAfterLayout();
+  return graph.root.totalSubtreeLength;
+}
 
 export default memoise(
   (tree) => tree.getAlignLeafLabels(),
-  rootNodeSelector,
-  branchScaleSelector,
-  scaleSelector,
-  (tree) => (showShapesSelector(tree) ? nodeSizeSelector(tree) : 0),
+  totalSubtreeLengthSelector,
+  (tree) => tree.getBranchScale(),
+  (tree) => tree.getScale(),
+  (tree) => (tree.getShowShapes() ? tree.getNodeSize() : 0),
   (
     alignLeafLabels,
-    rootNode,
+    totalSubtreeLength,
     branchScale,
     scale,
     nodeSize,
@@ -43,7 +42,7 @@ export default memoise(
     return (node) => {
       let offset = nodeSize / scale;
       if (alignLeafLabels) {
-        offset += (rootNode.totalSubtreeLength - node.distanceFromRoot) * branchScale;
+        offset += (totalSubtreeLength - node.distanceFromRoot) * branchScale;
       }
       return [
         node.x + offset * Math.cos(node.angle),

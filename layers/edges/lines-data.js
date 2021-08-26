@@ -23,22 +23,18 @@ import { TreeTypes } from "../../constants";
 
 import memoise from "../../utils/memoise";
 
-import treeTypeSelector from "../../selectors/treeType";
-
-import graphSelector from "../../selectors/graph";
-
 const linesDataSelector = memoise(
-  graphSelector,
-  treeTypeSelector,
+  (tree) => tree.getGraphAfterLayout(),
+  (tree) => tree.getTreeType(),
   (
-    { nodes },
+    graph,
     treeType,
   ) => {
     const lines = [];
 
     if (treeType === TreeTypes.Rectangular) {
-      for (let i = nodes.firstIndex + 1; i < nodes.lastIndex; i++) {
-        const node = nodes.preorderTraversal[i];
+      for (let i = graph.firstIndex + 1; i < graph.lastIndex; i++) {
+        const node = graph.preorderTraversal[i];
         lines.push({
           node,
           sourcePosition: [ node.parent.x, node.y ],
@@ -57,8 +53,8 @@ const linesDataSelector = memoise(
     }
 
     else if (treeType === TreeTypes.Hierarchical) {
-      for (let i = nodes.firstIndex + 1; i < nodes.lastIndex; i++) {
-        const node = nodes.preorderTraversal[i];
+      for (let i = graph.firstIndex + 1; i < graph.lastIndex; i++) {
+        const node = graph.preorderTraversal[i];
         lines.push({
           node,
           sourcePosition: [ node.parent.x, node.parent.y ],
@@ -77,8 +73,8 @@ const linesDataSelector = memoise(
     }
 
     else if (treeType === TreeTypes.Circular) {
-      for (let i = nodes.firstIndex + 1; i < nodes.lastIndex; i++) {
-        const node = nodes.preorderTraversal[i];
+      for (let i = graph.firstIndex + 1; i < graph.lastIndex; i++) {
+        const node = graph.preorderTraversal[i];
         lines.push({
           node,
           sourcePosition: [ node.x, node.y ],
@@ -92,8 +88,8 @@ const linesDataSelector = memoise(
     }
 
     else if (treeType === TreeTypes.Diagonal || treeType === TreeTypes.Radial) {
-      for (let i = nodes.firstIndex + 1; i < nodes.lastIndex; i++) {
-        const node = nodes.preorderTraversal[i];
+      for (let i = graph.firstIndex + 1; i < graph.lastIndex; i++) {
+        const node = graph.preorderTraversal[i];
         lines.push({
           node,
           sourcePosition: [ node.x, node.y ],

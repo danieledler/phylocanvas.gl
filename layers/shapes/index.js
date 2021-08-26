@@ -21,7 +21,6 @@
 
 import memoise from "../../utils/memoise";
 
-import nodeSizeSelector from "../../selectors/nodeSize";
 import visibleLeafNodesSelector from "./visible-leaf-nodes";
 import borderColourSelector from "./border-colour";
 import shapeBorderWidthSelector from "./shape-border-width";
@@ -36,7 +35,7 @@ const getColor = (node) => node.fillColour;
 
 export default memoise(
   visibleLeafNodesSelector,
-  nodeSizeSelector,
+  (tree) => tree.getNodeSize(),
   (tree) => tree.props.showShapeBorders,
   shapeBorderWidthSelector,
   borderColourSelector,

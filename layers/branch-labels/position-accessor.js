@@ -21,17 +21,13 @@
 
 import memoise from "../../utils/memoise";
 
-import branchScaleSelector from "../../selectors/branch-scale";
-import fontSizeSelector from "../../selectors/fontSize";
-import scaleSelector from "../../selectors/scale";
-import treeTypeSelector from "../../selectors/treeType";
 import { TreeTypes } from "../../constants";
 
 export default memoise(
-  treeTypeSelector,
-  branchScaleSelector,
-  fontSizeSelector,
-  scaleSelector,
+  (tree) => tree.getTreeType(),
+  (tree) => tree.getBranchScale(),
+  (tree) => tree.getFontSize(),
+  (tree) => tree.getScale(),
   (
     treeType,
     branchScale,

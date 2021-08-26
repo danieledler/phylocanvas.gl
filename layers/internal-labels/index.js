@@ -23,8 +23,6 @@ import { TextLayer } from "@deck.gl/layers";
 
 import memoise from "../../utils/memoise";
 import fontColourSelector from "./font-colour";
-import fontFamilySelector from "../../selectors/fontFamily";
-import fontSizeSelector from "../../selectors/fontSize";
 import internalNodesSelector from "./internal-nodes";
 import pixelOffsetSelector from "./pixel-offset";
 
@@ -45,8 +43,8 @@ function getTextAnchor(datum) {
 
 export default memoise(
   internalNodesSelector,
-  fontSizeSelector,
-  fontFamilySelector,
+  (tree) => tree.getFontSize(),
+  (tree) => tree.getFontFamily(),
   fontColourSelector,
   pixelOffsetSelector,
   (

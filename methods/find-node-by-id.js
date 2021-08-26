@@ -20,7 +20,7 @@
 // THE SOFTWARE.
 
 export default function findNodeById(nodeOrId) {
-  const nodes = this.graph();
+  const nodes = this.getGraphAfterLayout();
 
   let id;
 

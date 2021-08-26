@@ -19,7 +19,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import viewStateSelector from "../selectors/viewState";
 import targetToCentre from "./target-to-centre";
 
 export default function calculateScaledCentre(tree, startScale, newScale, canvasPoint, axis = "xy") {
@@ -40,7 +39,7 @@ export default function calculateScaledCentre(tree, startScale, newScale, canvas
   const pixelDeltaX = (axis === "x" || axis === "xy") ? (scaledScreenPoint[0] - canvasPoint[0]) / scale : 0;
   const pixelDeltaY = (axis === "y" || axis === "xy") ? (scaledScreenPoint[1] - canvasPoint[1]) / scale : 0;
 
-  const viewState = viewStateSelector(tree);
+  const viewState = tree.getView();
   const newTarget = [
     viewState.target[0] + pixelDeltaX,
     viewState.target[1] + pixelDeltaY,

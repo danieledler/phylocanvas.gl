@@ -4,11 +4,9 @@ export default Object.freeze({
   alignLabels: false,
   backgroundColour: null,
   blockHeaderFontSize: 13,
-  // blockLabelFontSize: 11,
-  blockLength: 16,
   blockPadding: 4,
   blocks: [],
-  // blockSize: null,
+  blockSize: 16,
   branchZoom: 0,
   centre: [ 0.5, 0.5 ],
   collapsedIds: EmptyArray,
@@ -21,8 +19,8 @@ export default Object.freeze({
   haloWidth: 4,
   highlightColour: [ 60, 115, 131, 255 ], // "#3C7383"
   interactive: false,
-  lineWidth: 1,
   metadata: {},
+  minScale: 0.01,
   nodeOverlapFactor: 0.1,
   nodeShape: "circle",
   nodeSize: 14,
@@ -46,6 +44,7 @@ export default Object.freeze({
   size: { height: 150, width: 300 }, // default canvas size
   stepZoom: 0,
   strokeColour: [ 34, 34, 34, 255 ], // "#222222"
+  strokeWidth: 1,
   styleLeafLabels: false,
   styleNodeEdges: false,
   styles: {},

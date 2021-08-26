@@ -22,29 +22,25 @@
 import memoise from "../../utils/memoise";
 import colourToRGBA from "../../utils/colour-to-rgba";
 
-import branchScaleSelector from "../../selectors/branch-scale";
-import metadataColumnWidthSelector from "../../selectors/metadataColumnWidth";
-import styledNodesSelector from "../../selectors/styled-nodes";
-
 export default memoise(
-  styledNodesSelector,
+  (tree) => tree.getGraphWithStyles(),
   (tree) => tree.getAlignLeafLabels(),
   (tree) => tree.props.metadata,
   (tree) => tree.props.blocks,
-  metadataColumnWidthSelector,
-  branchScaleSelector,
+  (tree) => tree.getMetadataColumnWidth(),
+  (tree) => tree.getBranchScale(),
   (
-    { nodes },
+    graph,
     shouldAlignLabels,
     metadataValues,
     metadataColumns,
-    columnWidths,
+    columnWidth,
     branchScale,
   ) => {
     const data = [];
 
-    for (let i = nodes.firstIndex; i < nodes.lastIndex; i++) {
-      const node = nodes.preorderTraversal[i];
+    for (let i = graph.firstIndex; i < graph.lastIndex; i++) {
+      const node = graph.preorderTraversal[i];
       if (node.isLeaf && node.shape && !node.isHidden && (node.id in metadataValues)) {
 
         const nodeMetadata = metadataValues[node.id];
@@ -52,7 +48,7 @@ export default memoise(
         const nodePositionOffset = (
           shouldAlignLabels
             ?
-            (branchScale * (nodes.root.totalSubtreeLength - node.distanceFromRoot))
+            (branchScale * (graph.root.totalSubtreeLength - node.distanceFromRoot))
             :
             0
         );
@@ -66,7 +62,6 @@ export default memoise(
         for (let index = 0; index < metadataColumns.length; index++) {
           const columnName = metadataColumns[index];
           const metadataValue = nodeMetadata[columnName];
-          const columnWidth = columnWidths[columnName];
 
           if (metadataValue) {
             if (metadataValue.colour) {

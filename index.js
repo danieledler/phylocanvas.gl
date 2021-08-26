@@ -13,6 +13,8 @@ PhylocanvasGL.defaults = defaults;
 export { default as PhylocanvasGL } from "./PhylocanvasGL";
 export * from "./constants";
 
+export { default as Utils } from "./utils";
+
 export { default as Defaults } from "./defaults";
 
 export const Newick = newick;

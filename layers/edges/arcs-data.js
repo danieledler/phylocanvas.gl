@@ -23,24 +23,20 @@ import { TreeTypes } from "../../constants";
 
 import memoise from "../../utils/memoise";
 
-import treeTypeSelector from "../../selectors/treeType";
-
-import graphSelector from "../../selectors/graph";
-
 const arcsDataSelector = memoise(
-  graphSelector,
-  treeTypeSelector,
+  (tree) => tree.getGraphAfterLayout(),
+  (tree) => tree.getTreeType(),
   (
-    { nodes },
+    graph,
     treeType,
   ) => {
     const arcs = [];
 
     if (treeType === TreeTypes.Circular) {
-      arcs.centrePoint = [ nodes.root.x, nodes.root.y ];
+      arcs.centrePoint = [ graph.root.x, graph.root.y ];
 
-      for (let i = nodes.firstIndex + 1; i < nodes.lastIndex; i++) {
-        const node = nodes.preorderTraversal[i];
+      for (let i = graph.firstIndex + 1; i < graph.lastIndex; i++) {
+        const node = graph.preorderTraversal[i];
 
         if (node.children && node.children.length && !node.isCollapsed) {
           const firstChild = node.children[0];
