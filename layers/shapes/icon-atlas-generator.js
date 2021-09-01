@@ -35,9 +35,9 @@ function drawShapes(size, padding) {
   ctx.strokeStyle = "red";
   ctx.lineWidth = borderSize;
   ctx.globalAlpha = 1;
-  ctx.font = `${size}px Segoe UI Emoji`;
-  ctx.textAlign = "center";
-  ctx.textBaseline = "top";
+  // ctx.font = `${size}px Segoe UI Emoji`;
+  // ctx.textAlign = "center";
+  // ctx.textBaseline = "top";
 
   for (let index = 0; index < shapeNames.length; index++) {
     const shape = shapeNames[index];

@@ -42,6 +42,7 @@ export default memoise(
       id: "edges",
       data: graph,
       lineWidth,
+      updateTriggers: { getColor: colourAccessor },
     });
   }
 );

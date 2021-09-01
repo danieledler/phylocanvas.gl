@@ -38,16 +38,16 @@ export default memoise(
     highlightedNode,
   ) => {
     if (highlightedNode || styleNodeEdges) {
-      return (edge) => {
+      return (node) => {
         if (
           highlightedNode &&
-          edge.node.preIndex > highlightedNode.preIndex &&
-          edge.node.preIndex < highlightedNode.preIndex + highlightedNode.totalNodes
+          node.preIndex > highlightedNode.preIndex &&
+          node.preIndex < highlightedNode.preIndex + highlightedNode.totalNodes
         ) {
           return highlightColour;
         }
         else if (styleNodeEdges) {
-          const colourArray = [ ...edge.strokeColour ];
+          const colourArray = [ ...node.strokeColour ];
           colourArray[3] = lineColour[3];
           return colourArray;
         }

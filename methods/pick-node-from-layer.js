@@ -23,10 +23,10 @@ export default function pickNodeFromLayer({ layer, object }) {
   let node;
 
   if (layer && object) {
-    if (layer.id === "shapes" || layer.id === "leaf-labels") {
+    if (layer.id === "shapes" || layer.id === "edges" || layer.id === "leaf-labels") {
       node = object;
     }
-    else if (layer.id === "edges" || layer.id === "piecharts" || layer.id === "metadata") {
+    else if (layer.id === "piecharts" || layer.id === "metadata") {
       node = object.node;
     }
     else {
