@@ -50,7 +50,9 @@ export default class EdgesLayer extends CompositeLayer {
 
         for (const node of updater.nodes) {
           if (node.children && node.children.length) {
-            updater.nodesWithChldren.push(node);
+            if (node.children.length > 1) {
+              updater.nodesWithChldren.push(node);
+            }
           }
         }
       }
