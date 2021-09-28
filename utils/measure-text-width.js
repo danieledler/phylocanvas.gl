@@ -21,7 +21,7 @@
 
 import canvasContext from "./canvas-context";
 
-export default function (text, fontFamily, fontSize) {
+export default function measureTextWidth(text, fontFamily, fontSize) {
   const ctx = canvasContext();
   ctx.font = `${fontSize}px ${fontFamily}`;
   const textMetrics = ctx.measureText(text);
