@@ -59,6 +59,7 @@ export default memoise(
     ];
 
     let angle = firstLeaf.angle;
+
     if (!hasMetadataLabels) {
       angle -= Angles.Degrees90;
     }
