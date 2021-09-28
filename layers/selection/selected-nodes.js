@@ -35,7 +35,10 @@ export default memoise(
     if ((selectedIds && selectedIds.length)) {
       const selectedNodes = [];
       for (const id of selectedIds) {
-        selectedNodes.push(graph.ids[id]);
+        const node = graph.ids[id];
+        if (!node.isHidden) {
+          selectedNodes.push(node);
+        }
       }
       return selectedNodes;
     }
