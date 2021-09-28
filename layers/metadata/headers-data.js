@@ -65,7 +65,7 @@ export default memoise(
     }
 
     let xOffset = 0;
-    const offsetY = -blockSize;
+    const offsetY = (angle === 0 ? 1 : -1) * blockSize;
     for (let index = 0; index < metadataColumns.length; index++) {
       const columnName = metadataColumns[index];
 
