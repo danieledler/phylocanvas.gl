@@ -25,6 +25,8 @@ import textPositionAccessorSelector from "../layers/leaf-labels/text-position-ac
 import shapeBorderWidthSelector from "../layers/shapes/shape-border-width";
 import shapeBorderColourSelector from "../layers/shapes/border-colour";
 
+import blocksDataMemo from "../layers/metadata/blocks-data";
+
 import lineColourSelector from "../layers/edges/line-colour";
 
 import drawVectorShape from "../utils/draw-vector-shape";
@@ -63,13 +65,13 @@ export default function exportSVG() {
   const type = this.getTreeType();
   const nodeSize = this.getNodeSize();
   const nodeRadius = nodeSize * 0.5;
-  const view = this.getView(this);
-  const canvasCentre = this.getCanvasCentrePoint();
+
   const svg = [];
 
+  const area = this.getDrawingArea();
   const centre = [
-    canvasCentre[0] + view.target[0],
-    canvasCentre[1] + view.target[1],
+    (area.width / 2) + area.left,
+    (area.height / 2) + area.top,
   ];
 
   svg.push(`<svg viewBox="0 0 ${size.width} ${size.height}" xmlns="http://www.w3.org/2000/svg">\n`);
@@ -149,6 +151,7 @@ export default function exportSVG() {
           shapeBorderWidth,
         )
       );
+      svg.push("\n");
     }
     // skip collapsed subtrees
     if (node.isCollapsed) {
@@ -161,19 +164,32 @@ export default function exportSVG() {
 
   //#region Draw labels
 
-  const labelledLeafNodes = labelledLeafNodesSelector(this);
-  const textPositionAccessor = textPositionAccessorSelector(this);
-  const fontFamily = this.getFontFamily();
-  const fontSize = this.getFontSize();
-  svg.push(`<g font-family="${fontFamily.replace(/"/g, "'")}" font-size="${fontSize}">\n`);
+  if (this.props.showLabels && this.props.showLeafLabels) {
+    const labelledLeafNodes = labelledLeafNodesSelector(this);
+    const textPositionAccessor = textPositionAccessorSelector(this);
+    const fontFamily = this.getFontFamily();
+    const fontSize = this.getFontSize();
+    svg.push(`<g font-family="${fontFamily.replace(/"/g, "'")}" font-size="${fontSize}">\n`);
 
-  for (const node of labelledLeafNodes) {
-    const [ x, y ] = textPositionAccessor(node);
-    const degrees = ((node.angle / Angles.Degrees360) * 360) + (node.inverted ? 180 : 0);
-    svg.push(`<text x="${x}" y="${y}" text-anchor="${node.inverted ? "end" : "start"}" dominant-baseline="middle" transform="rotate(${degrees},${x},${y})">${node.label}</text>\n`);
+    for (const node of labelledLeafNodes) {
+      const [ x, y ] = textPositionAccessor(node);
+      const degrees = ((node.angle / Angles.Degrees360) * 360) + (node.inverted ? 180 : 0);
+      svg.push(`<text x="${x}" y="${y}" text-anchor="${node.inverted ? "end" : "start"}" dominant-baseline="middle" transform="rotate(${degrees},${x},${y})">${node.label}</text>\n`);
+    }
+
+    svg.push("</g>\n");
   }
 
-  svg.push("</g>\n");
+  //#endregion
+
+  //#region Metadata blocks
+  const pixelOffset = this.getPixelOffsets().length;
+  const blockSize = this.getBlockSize();
+  const blockRadius = this.getBlockSize() / 2;
+  const blocks = blocksDataMemo(this);
+  for (const datum of blocks) {
+    svg.push(`<rect x="${datum.position[0] + ((datum.offsetX + pixelOffset) * Math.cos(datum.node.angle)) - blockRadius}" y="${datum.position[1] + ((datum.offsetX + pixelOffset) * Math.sin(datum.node.angle)) - blockRadius}" width="${blockSize}" height="${blockSize}" fill="${colourArrayToCssRGBA(datum.colour)}" />\n`);
+  }
 
   //#endregion
 
