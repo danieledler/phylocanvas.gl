@@ -119,8 +119,6 @@ class PhylocanvasGL {
     const domElemment = (typeof view === "string") ? document.getElementById(view) : view;
 
     this.cache = new Map();
-    this.cache2 = new Map();
-    this.cache3 = new Map();
 
     this.view = domElemment;
     this.deferred = {
