@@ -25,6 +25,7 @@ export default function highlightNode(nodeOrId = null) {
   if ((this.props.highlightedId ?? null) !== highlightedId) {
     this.setProps(
       { highlightedId },
+      "hover",
     );
   }
 }
