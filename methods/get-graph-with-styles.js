@@ -31,7 +31,7 @@ const graphWithStylesMemo = memoise(
   (tree) => tree.props.styles || defaults.styles,
   (tree) => tree.props.styleNodeEdges || defaults.styleNodeEdges,
   (tree) => tree.props.showPiecharts || defaults.showPiecharts,
-  (tree) => tree.props.nodeShape || defaults.nodeShape,
+  (tree) => tree.props.nodeShape ?? defaults.nodeShape,
   (tree) => tree.getFillColour(),
   (tree) => tree.getStrokeColour(),
   (
