@@ -21,12 +21,13 @@
 
 import memoise from "../../utils/memoise";
 import colourToRGBA from "../../utils/colour-to-rgba";
+import { EmptyArray, EmptyObject } from "../../constants";
 
 export default memoise(
   (tree) => tree.getGraphWithStyles(),
   (tree) => tree.getAlignLeafLabels(),
-  (tree) => tree.props.metadata,
-  (tree) => tree.props.blocks,
+  (tree) => tree.props.metadata || EmptyObject,
+  (tree) => tree.props.blocks || EmptyArray,
   (tree) => tree.getMetadataColumnWidth(),
   (tree) => tree.getBranchScale(),
   (

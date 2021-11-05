@@ -33,9 +33,19 @@ import drawVectorShape from "../utils/draw-vector-shape";
 
 import { Angles, TreeTypes } from "../constants";
 
-function colourArrayToCssRGBA(colourArray) {
+function colourArrayToCssRGBA(colourArray, ignoreAlpha = true) {
   const [ r, g, b, a = 255 ] = colourArray;
-  return `rgba(${r}, ${g}, ${b}, ${a / 255})`;
+
+  if (r + g + b === 0) {
+    return "none";
+  }
+
+  if (ignoreAlpha || a === 255) {
+    return `rgb(${r}, ${g}, ${b})`;
+  }
+  else {
+    return `rgba(${r}, ${g}, ${b}, ${a / 255})`;
+  }
 }
 
 function polarToCartesian(centerX, centerY, radius, angleInRadians) {
@@ -56,7 +66,7 @@ function describeArc(x, y, radius, startAngle, endAngle) {
     "A", radius, radius, 0, largeArcFlag, 0, end.x, end.y,
   ];
 
-  return `<path fill="transparent" d="${d.join(" ")}" />`;
+  return `<path fill="none" d="${d.join(" ")}" />`;
 }
 
 export default function exportSVG() {
