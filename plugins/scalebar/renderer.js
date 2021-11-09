@@ -85,7 +85,7 @@ export default memoise(
 
     const left = (padding + options.lineWidth) / scale;
     const right = (width - padding - options.lineWidth) / scale;
-    const bottom = (padding * 2) / scale;
+    const bottom = (options.height - padding) / scale;
 
     const layer = new ScalebarLayer({
       id: "scalebar-plugin",
@@ -94,23 +94,15 @@ export default memoise(
           {
             position: [
               x + (options.width / scale) / 2,
-              y + (options.height / scale),
+              y + bottom,
             ],
             text: scaleValue.toFixed(minDigitis + options.digits),
           },
         ],
         lines: [
           {
-            sourcePosition: [ x + left, y + left ],
-            targetPosition: [ x + right, y + left ],
-          },
-          {
-            sourcePosition: [ x + left, y + left ],
-            targetPosition: [ x + left, y + bottom ],
-          },
-          {
-            sourcePosition: [ x + right, y + left ],
-            targetPosition: [ x + right, y + bottom ],
+            sourcePosition: [ x + left, y + bottom],
+            targetPosition: [ x + right, y + bottom],
           },
         ],
       },

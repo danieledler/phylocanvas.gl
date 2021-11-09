@@ -78,6 +78,7 @@ export default {
   "hasMetadataLabels": require("./has-metadata-labels").default,
   "highlightNode": require("./highlight-node").default,
   "importJSON": require("./import-json").default,
+  "init": require("./init").default,
   "isCanvasPointOnScreen": require("./is-canvas-point-on-screen").default,
   "isOrthogonal": require("./is-orthogonal").default,
   "isTreePointOnScreen": require("./is-tree-point-on-screen").default,

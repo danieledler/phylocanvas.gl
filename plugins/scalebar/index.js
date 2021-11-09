@@ -1,7 +1,8 @@
 import renderer from "./renderer";
 
 export default function (tree, decorate) {
-  decorate("createLayers", (delegate, args) => {
+  decorate("init", (delegate, args) => {
+
     delegate(...args);
 
     tree.addLayer(
