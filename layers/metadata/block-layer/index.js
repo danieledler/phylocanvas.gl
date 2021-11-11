@@ -61,17 +61,23 @@ export default class BlockLayer extends ScatterplotLayer {
 
     return new Model(
       gl,
-      Object.assign(this.getShaders(), {
+      {
+        ...this.getShaders(),
         id: this.props.id,
         geometry: new Geometry({
           drawMode: GL.TRIANGLE_FAN,
           // vertexCount: 4,
           attributes: {
-            positions: { size: 2, value: new Float32Array(positions) },
+            // The size must be explicitly passed here otherwise luma.gl
+            // will default to assuming that positions are 3D (x,y,z)
+            positions: {
+              size: 2,
+              value: new Float32Array(positions),
+            },
           },
         }),
         isInstanced: true,
-      })
+      }
     );
   }
 

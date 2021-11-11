@@ -54,7 +54,7 @@ export default class LeafLabelsLayer extends CompositeLayer {
         fontFamily: this.props.fontFamily,
         getTextAnchor,
         backgroundColor: this.props.backgroundColour,
-        updateTriggers: { getPosition: this.props.getTextPosition },
+        updateTriggers: { getPosition: this.props.updateTriggers.getTextPosition },
         pickable: true,
       }),
     ];
@@ -86,7 +86,7 @@ export default class LeafLabelsLayer extends CompositeLayer {
           getColor: this.props.lineColour,
           getWidth: this.props.lineWidth,
           opacity: 0.54,
-          updateTriggers: { getSourcePosition: this.props.getTextPosition },
+          updateTriggers: { getSourcePosition: this.props.updateTriggers.getTextPosition },
         })
       );
     }

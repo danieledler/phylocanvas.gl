@@ -68,6 +68,7 @@ export default memoise(
       id: "leaf-labels",
       lineColour,
       lineWidth: lineWidth * 0.5,
+      updateTriggers: { getTextPosition: textPositionAccessor },
     });
 
     return layer;

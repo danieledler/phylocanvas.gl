@@ -43,6 +43,9 @@ uniform float lineWidthMinPixels;
 uniform float lineWidthMaxPixels;
 uniform float stroked;
 uniform bool filled;
+uniform bool billboard;
+uniform int radiusUnits;
+uniform int lineWidthUnits;
 
 varying vec4 vFillColor;
 varying vec4 vLineColor;
@@ -63,13 +66,13 @@ void main(void) {
 
   // Multiply out radius and clamp to limits
   outerRadiusPixels = clamp(
-    project_size_to_pixel(radiusScale * instanceRadius),
+    project_size_to_pixel(radiusScale * instanceRadius, radiusUnits),
     radiusMinPixels, radiusMaxPixels
   );
   
   // Multiply out line width and clamp to limits
   float lineWidthPixels = clamp(
-    project_size_to_pixel(lineWidthScale * instanceLineWidths),
+    project_size_to_pixel(lineWidthScale * instanceLineWidths, lineWidthUnits),
     lineWidthMinPixels, lineWidthMaxPixels
   );
 
@@ -83,12 +86,23 @@ void main(void) {
 
   innerUnitRadius = 1.0 - stroked * lineWidthPixels / outerRadiusPixels;
   
-  vec3 offset = positions * project_pixel_size(outerRadiusPixels);
-  offset = vec3(rotate_by_angle(vec2(offset.x, offset.y), instanceAngles), 0.0);
-  offset += vec3(project_pixel_size(instancePixelOffset), 0.0);
+  if (billboard) {
+    gl_Position = project_position_to_clipspace(instancePositions, instancePositions64Low, vec3(0.0), geometry.position);
+    vec3 offset = positions * outerRadiusPixels;
+    DECKGL_FILTER_SIZE(offset, geometry);
+    gl_Position.xy += project_pixel_size_to_clipspace(offset.xy);
+  } else {
+    vec3 offset = positions * project_pixel_size(outerRadiusPixels);
 
-  DECKGL_FILTER_SIZE(offset, geometry);
-  gl_Position = project_position_to_clipspace(instancePositions, instancePositions64Low, offset, geometry.position);
+    offset = vec3(rotate_by_angle(vec2(offset.x, offset.y), instanceAngles), 0.0);
+    offset += vec3(project_pixel_size(instancePixelOffset), 0.0);
+  
+    // vec3 offset_common = vec3(project_pixel_size(pixelOffset), 0.0);
+
+    DECKGL_FILTER_SIZE(offset, geometry);
+    gl_Position = project_position_to_clipspace(instancePositions, instancePositions64Low, offset, geometry.position);
+  }
+
   DECKGL_FILTER_GL_POSITION(gl_Position, geometry);
 
   // Apply opacity to instance color, or return instance picking color

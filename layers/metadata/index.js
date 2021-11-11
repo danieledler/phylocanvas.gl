@@ -46,8 +46,8 @@ export default memoise(
     hasMetadataHeaders,
   ) => {
     const layer = new MetadataLayer({
-      blockSize,
       blocks: blockData,
+      blockSize,
       fontColour: colourToRGBA("black"),
       fontFamily,
       fontSize: Math.min(blockSize, blockHeaderFontSize),
