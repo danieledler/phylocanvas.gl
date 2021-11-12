@@ -19,44 +19,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import memoise from "../../utils/memoise";
-import colourToRGBA from "../../utils/colour-to-rgba";
-
-import fontSizeSelector from "./font-size";
-import blocksDataSelector from "./blocks-data";
-import headersDataSelector from "./headers-data";
-import pixelOffsetAccessorSelector from "./pixel-offset-accessor";
-
-import MetadataLayer from "./metadata-layer";
-
-export default memoise(
-  blocksDataSelector,
-  (tree) => tree.getBlockSize(),
-  headersDataSelector,
-  (tree) => tree.getFontFamily(),
-  fontSizeSelector,
-  pixelOffsetAccessorSelector,
-  (tree) => tree.hasMetadataHeaders(),
-  (
-    blockData,
-    blockSize,
-    headersData,
-    fontFamily,
-    fontSize,
-    pixelOffsetAccessor,
-    hasMetadataHeaders,
-  ) => {
-    const layer = new MetadataLayer({
-      blocks: blockData,
-      blockSize,
-      fontColour: colourToRGBA("black"),
-      fontFamily,
-      fontSize,
-      getPixelOffset: pixelOffsetAccessor,
-      hasHeaders: hasMetadataHeaders,
-      headers: headersData,
-      id: "metadata",
-    });
-    return layer;
-  }
-);
+export default (tree) => {
+  const blockSize = tree.getBlockSize();
+  const blockHeaderFontSize = tree.getBlockHeaderFontSize();
+  return Math.min(blockSize, blockHeaderFontSize);
+};

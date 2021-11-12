@@ -26,6 +26,9 @@ import shapeBorderWidthSelector from "../layers/shapes/shape-border-width";
 import shapeBorderColourSelector from "../layers/shapes/border-colour";
 
 import blocksDataMemo from "../layers/metadata/blocks-data";
+import headersDataMemo from "../layers/metadata/headers-data";
+import pixelOffsetAccessorMemo from "../layers/metadata/pixel-offset-accessor";
+import metadataHeaderFontSizeMemo from "../layers/metadata/font-size";
 
 import lineColourSelector from "../layers/edges/line-colour";
 
@@ -86,124 +89,149 @@ export default function exportSVG() {
 
   svg.push(`<svg viewBox="0 0 ${size.width} ${size.height}" xmlns="http://www.w3.org/2000/svg">\n`);
 
-  svg.push(`<g transform="translate(${centre.join(" ")})" >\n`);
+  {
+    svg.push(`<g transform="translate(${centre.join(" ")})" >\n`);
 
-  //#region Draw lines
-  const lineWidth = this.getStrokeWidth();
-  const lineColour = colourArrayToCssRGBA(lineColourSelector(this));
+    //#region Draw lines
+    const lineWidth = this.getStrokeWidth();
+    const lineColour = colourArrayToCssRGBA(lineColourSelector(this));
 
-  svg.push(`<g stroke="${lineColour}" stroke-width="${lineWidth}" >\n`);
+    svg.push(`<g stroke="${lineColour}" stroke-width="${lineWidth}" >\n`);
 
-  for (let i = nodes.firstIndex + 1; i < nodes.lastIndex; i++) {
-    const node = nodes.preorderTraversal[i];
+    for (let i = nodes.firstIndex + 1; i < nodes.lastIndex; i++) {
+      const node = nodes.preorderTraversal[i];
 
-    if (type === TreeTypes.Circular) {
-      svg.push(`<line x1="${node.x}" y1="${node.y}" x2="${node.cx}" y2="${node.cy}"  />\n`);
+      if (type === TreeTypes.Circular) {
+        svg.push(`<line x1="${node.x}" y1="${node.y}" x2="${node.cx}" y2="${node.cy}"  />\n`);
 
-      if (node.children && node.children.length && !node.isCollapsed) {
-        const firstChild = node.children[0];
-        const lastChild = node.children[node.children.length - 1];
-        svg.push(
-          describeArc(
-            nodes.root.x,
-            nodes.root.y,
-            node.dist,
-            firstChild.angle,
-            lastChild.angle,
-          )
-        );
+        if (node.children && node.children.length && !node.isCollapsed) {
+          const firstChild = node.children[0];
+          const lastChild = node.children[node.children.length - 1];
+          svg.push(
+            describeArc(
+              nodes.root.x,
+              nodes.root.y,
+              node.dist,
+              firstChild.angle,
+              lastChild.angle,
+            )
+          );
+        }
+      }
+      else if (type === TreeTypes.Diagonal || type === TreeTypes.Radial) {
+        svg.push(`<line x1="${node.x}" y1="${node.y}" x2="${node.parent.x}" y2="${node.parent.y}"  />\n`);
+      }
+      else if (type === TreeTypes.Hierarchical) {
+        svg.push(`<line x1="${node.x}" y1="${node.y}" x2="${node.x}" y2="${node.parent.y}"  />\n`);
+        svg.push(`<line x1="${node.x}" y1="${node.parent.y}" x2="${node.parent.x}" y2="${node.parent.y}"  />\n`);
+      }
+      else if (type === TreeTypes.Rectangular) {
+        svg.push(`<line x1="${node.x}" y1="${node.y}" x2="${node.parent.x}" y2="${node.y}"  />\n`);
+        svg.push(`<line x1="${node.parent.x}" y1="${node.y}" x2="${node.parent.x}" y2="${node.parent.y}"  />\n`);
+      }
+
+      // skip collapsed sub-trees
+      if (node.isCollapsed) {
+        i += node.totalNodes - 1;
       }
     }
-    else if (type === TreeTypes.Diagonal || type === TreeTypes.Radial) {
-      svg.push(`<line x1="${node.x}" y1="${node.y}" x2="${node.parent.x}" y2="${node.parent.y}"  />\n`);
+    svg.push("</g>\n");
+
+    //#endregion
+
+    //#region Draw node shapes
+    const showShapeBorders = this.props.showShapeBorders;
+
+    let shapeBorderWidth = "";
+    let shapeBorderColour = "";
+    if (showShapeBorders) {
+      shapeBorderWidth = shapeBorderWidthSelector(this);
+      shapeBorderColour = colourArrayToCssRGBA(shapeBorderColourSelector(this));
     }
-    else if (type === TreeTypes.Hierarchical) {
-      svg.push(`<line x1="${node.x}" y1="${node.y}" x2="${node.x}" y2="${node.parent.y}"  />\n`);
-      svg.push(`<line x1="${node.x}" y1="${node.parent.y}" x2="${node.parent.x}" y2="${node.parent.y}"  />\n`);
-    }
-    else if (type === TreeTypes.Rectangular) {
-      svg.push(`<line x1="${node.x}" y1="${node.y}" x2="${node.parent.x}" y2="${node.y}"  />\n`);
-      svg.push(`<line x1="${node.parent.x}" y1="${node.y}" x2="${node.parent.x}" y2="${node.parent.y}"  />\n`);
-    }
 
-    // skip collapsed sub-trees
-    if (node.isCollapsed) {
-      i += node.totalNodes - 1;
-    }
-  }
-  svg.push("</g>\n");
+    svg.push("<g>\n");
 
-  //#endregion
-
-  //#region Draw node shapes
-  const showShapeBorders = this.props.showShapeBorders;
-
-  let shapeBorderWidth = "";
-  let shapeBorderColour = "";
-  if (showShapeBorders) {
-    shapeBorderWidth = shapeBorderWidthSelector(this);
-    shapeBorderColour = colourArrayToCssRGBA(shapeBorderColourSelector(this));
-  }
-
-  svg.push("<g>\n");
-
-  for (let i = nodes.firstIndex; i < nodes.lastIndex; i++) {
-    const node = nodes.preorderTraversal[i];
-    if (node.isLeaf && node.shape && !node.isHidden) {
-      svg.push(
-        drawVectorShape(
-          node.shape,
-          node.x,
-          node.y,
-          nodeRadius,
-          colourArrayToCssRGBA(node.fillColour),
-          shapeBorderColour,
-          shapeBorderWidth,
-        )
-      );
-      svg.push("\n");
-    }
-    // skip collapsed subtrees
-    if (node.isCollapsed) {
-      i += node.totalNodes - 1;
-    }
-  }
-
-  svg.push("</g>\n");
-  //#endregion
-
-  //#region Draw labels
-
-  if (this.props.showLabels && this.props.showLeafLabels) {
-    const labelledLeafNodes = labelledLeafNodesSelector(this);
-    const textPositionAccessor = textPositionAccessorSelector(this);
-    const fontFamily = this.getFontFamily();
-    const fontSize = this.getFontSize();
-    svg.push(`<g font-family="${fontFamily.replace(/"/g, "'")}" font-size="${fontSize}">\n`);
-
-    for (const node of labelledLeafNodes) {
-      const [ x, y ] = textPositionAccessor(node);
-      const degrees = ((node.angle / Angles.Degrees360) * 360) + (node.inverted ? 180 : 0);
-      svg.push(`<text x="${x}" y="${y}" text-anchor="${node.inverted ? "end" : "start"}" dominant-baseline="middle" transform="rotate(${degrees},${x},${y})">${node.label}</text>\n`);
+    for (let i = nodes.firstIndex; i < nodes.lastIndex; i++) {
+      const node = nodes.preorderTraversal[i];
+      if (node.isLeaf && node.shape && !node.isHidden) {
+        svg.push(
+          drawVectorShape(
+            node.shape,
+            node.x,
+            node.y,
+            nodeRadius,
+            colourArrayToCssRGBA(node.fillColour),
+            shapeBorderColour,
+            shapeBorderWidth,
+          )
+        );
+        svg.push("\n");
+      }
+      // skip collapsed subtrees
+      if (node.isCollapsed) {
+        i += node.totalNodes - 1;
+      }
     }
 
     svg.push("</g>\n");
+    //#endregion
+
+    //#region Draw labels
+
+    if (this.props.showLabels && this.props.showLeafLabels) {
+      const labelledLeafNodes = labelledLeafNodesSelector(this);
+      const textPositionAccessor = textPositionAccessorSelector(this);
+      const fontFamily = this.getFontFamily();
+      const fontSize = this.getFontSize();
+      svg.push(`<g font-family="${fontFamily.replace(/"/g, "'")}" font-size="${fontSize}">\n`);
+
+      for (const node of labelledLeafNodes) {
+        const [ x, y ] = textPositionAccessor(node);
+        const degrees = ((node.angle / Angles.Degrees360) * 360) + (node.inverted ? 180 : 0);
+        svg.push(`<text x="${x}" y="${y}" text-anchor="${node.inverted ? "end" : "start"}" dominant-baseline="middle" transform="rotate(${degrees},${x},${y})">${node.label}</text>\n`);
+      }
+
+      svg.push("</g>\n");
+    }
+
+    //#endregion
+
+    //#region Metadata blocks
+
+    const pixelOffset = this.getPixelOffsets().length;
+    const blockSize = this.getBlockSize();
+    const blockRadius = this.getBlockSize() / 2;
+    const blocks = blocksDataMemo(this);
+    for (const datum of blocks) {
+      svg.push(`<rect x="${datum.position[0] + ((datum.offsetX + pixelOffset) * Math.cos(datum.node.angle)) - blockRadius}" y="${datum.position[1] + ((datum.offsetX + pixelOffset) * Math.sin(datum.node.angle)) - blockRadius}" width="${blockSize}" height="${blockSize}" fill="${colourArrayToCssRGBA(datum.colour)}" />\n`);
+    }
+
+    //#endregion
+
+    //#region Metadata headers
+    if (this.hasMetadataHeaders()) {
+      const headersData = headersDataMemo(this);
+      const fontFamily = this.getFontFamily();
+      const fontSize = metadataHeaderFontSizeMemo(this);
+      const pixelOffsetAccessor = pixelOffsetAccessorMemo(this);
+
+      svg.push(`<g font-family="${fontFamily.replace(/"/g, "'")}" font-size="${fontSize}">\n`);
+
+      for (const datum of headersData) {
+        const [ offsetX, offsetY ] = pixelOffsetAccessor(datum);
+        const [ positionX, positionY ] = datum.position;
+        const x = positionX + offsetX;
+        const y = positionY + offsetY;
+        const degrees = (datum.angle) + 180;
+        svg.push(`<text x="${x}" y="${y}" text-anchor="${datum.inverted ? "end" : "start"}" dominant-baseline="middle" transform="rotate(${degrees},${x},${y})">${datum.text}</text>\n`);
+      }
+
+      svg.push("</g>\n");
+    }
+    //#endregion
+
+    svg.push("</g>\n");
   }
-
-  //#endregion
-
-  //#region Metadata blocks
-  const pixelOffset = this.getPixelOffsets().length;
-  const blockSize = this.getBlockSize();
-  const blockRadius = this.getBlockSize() / 2;
-  const blocks = blocksDataMemo(this);
-  for (const datum of blocks) {
-    svg.push(`<rect x="${datum.position[0] + ((datum.offsetX + pixelOffset) * Math.cos(datum.node.angle)) - blockRadius}" y="${datum.position[1] + ((datum.offsetX + pixelOffset) * Math.sin(datum.node.angle)) - blockRadius}" width="${blockSize}" height="${blockSize}" fill="${colourArrayToCssRGBA(datum.colour)}" />\n`);
-  }
-
-  //#endregion
-
-  svg.push("</g>\n");
 
   svg.push("</svg>\n");
 
