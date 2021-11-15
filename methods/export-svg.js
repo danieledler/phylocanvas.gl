@@ -39,7 +39,7 @@ import { Angles, TreeTypes } from "../constants";
 function colourArrayToCssRGBA(colourArray, ignoreAlpha = true) {
   const [ r, g, b, a = 255 ] = colourArray;
 
-  if (r + g + b === 0) {
+  if (a === 0) {
     return "none";
   }
 
