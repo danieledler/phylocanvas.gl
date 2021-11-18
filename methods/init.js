@@ -24,7 +24,7 @@ const logoDataUrl = "url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEsAAAA
 function init() {
   let timeoutId;
 
-  const resetFixedScale = () => console.log("object") || this.setProps({ fixedScale: null });
+  const resetFixedScale = () => this.setProps({ fixedScale: null });
 
   this.deck = new Deck({
     pickingRadius: 2,
