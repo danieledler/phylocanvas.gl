@@ -34,9 +34,8 @@ export default memoise(
   ) => {
     if ((selectedIds && selectedIds.length)) {
       const selectedNodes = [];
-      for (const id of selectedIds) {
-        const node = graph.ids[id];
-        if (node && !node.isHidden) {
+      for (const node of graph.leaves) {
+        if (!node.isHidden && selectedIds.includes(node.id)) {
           selectedNodes.push(node);
         }
       }
