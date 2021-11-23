@@ -47,6 +47,7 @@ export default memoise(
   (tree) => tree.getFontFamily(),
   fontColourSelector,
   pixelOffsetSelector,
+  (tree) => tree.props.showInternalLabels,
   (
     internalNodes,
     fontSize,

@@ -38,14 +38,9 @@ export default function () {
 
   for (const layer of this.layers) {
     const visible = (layer.isVisible === true) || layer.isVisible(this.props);
+    const deckglLayer = layer.renderLayer(this);
     if (visible) {
-      layer.deckglLayer = layer.renderLayer(this);
-      deckglLayers.push(layer.deckglLayer);
-    }
-    else if (layer.deckglLayer) {
-      if (layer.deckglLayer.visible) {
-        layer.deckglLayer.setProps({ visible: false });
-      }
+      deckglLayers.push(deckglLayer);
     }
   }
 
