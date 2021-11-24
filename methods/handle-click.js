@@ -21,21 +21,8 @@
 
 export default function handleClick(info, event) {
   const node = this.pickNodeFromLayer(info);
-
-  if (event.srcEvent.shiftKey && this.props.selectedIds && this.props.selectedIds.length) {
-    const lastSelectedNode = this.findNodeById(this.props.selectedIds[this.props.selectedIds.length - 1]);
-    const nodes = this.getGraphAfterLayout();
-    const lastSelectedNodeIndex = nodes.leaves.indexOf(lastSelectedNode);
-    const clickedNodeIndex = nodes.leaves.indexOf(node);
-    const first = Math.min(lastSelectedNodeIndex + 1, clickedNodeIndex);
-    const last = Math.max(lastSelectedNodeIndex - 1, clickedNodeIndex);
-    const ids = [];
-    for (let index = first; index <= last; index++) {
-      ids.push(nodes.leaves[index].id);
-    }
-    this.selectLeafNodes(ids, true);
-  }
-  else {
-    this.selectNode(node, event.srcEvent.metaKey || event.srcEvent.ctrlKey);
-  }
+  this.selectNode(
+    node,
+    event.srcEvent.metaKey || event.srcEvent.ctrlKey,
+  );
 }
