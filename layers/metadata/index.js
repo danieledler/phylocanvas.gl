@@ -29,7 +29,7 @@ import pixelOffsetAccessorSelector from "./pixel-offset-accessor";
 
 import MetadataLayer from "./metadata-layer";
 
-export default memoise(
+export default () => memoise(
   blocksDataSelector,
   (tree) => tree.getBlockSize(),
   headersDataSelector,

@@ -19,7 +19,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import getPostorderTraversal from "../utils/postorder-traversal";
+import serialiseAsNewick from "../utils/serialise-as-newick";
 
 function reroot(tree, treeRoot, parent, sourceNode) {
   const newRoot = {
@@ -38,21 +38,6 @@ function reroot(tree, treeRoot, parent, sourceNode) {
   if (sourceNode.parent.parent && sourceNode.parent !== treeRoot) {
     reroot(tree, treeRoot, newRoot, sourceNode.parent);
   }
-}
-
-function getSource(newRoot) {
-  const postorderTraversal = getPostorderTraversal(newRoot);
-  const subtrees = [];
-  for (const node of postorderTraversal) {
-    if (node.isLeaf) {
-      subtrees.push(`${node.id}:${node.branchLength}`);
-    } else if (node !== newRoot) {
-      const chunks = subtrees.splice(subtrees.length - node.children.length, node.children.length);
-      subtrees.push(`(${chunks.join(",")}):${node.branchLength}`);
-    }
-  }
-
-  return `(${subtrees.join(",")});`;
 }
 
 export default function () {
@@ -122,7 +107,7 @@ export default function () {
   const source = {
     type: "newick",
     original: this.props.source,
-    data: getSource(newRootNode),
+    data: serialiseAsNewick(newRootNode),
   };
 
   this.setSource(source);

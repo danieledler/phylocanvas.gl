@@ -27,11 +27,13 @@ export default function serialiseAsNewick(newRoot) {
   const subtrees = [];
 
   for (const node of postorderTraversal) {
+    const nodeLabel = node.name || node.id || "";
     if (node.isLeaf) {
-      subtrees.push(`${node.id}:${node.branchLength}`);
-    } else if (node !== newRoot) {
+      subtrees.push(`${nodeLabel}:${node.branchLength}`);
+    }
+    else if (node !== newRoot) {
       const chunks = subtrees.splice(subtrees.length - node.children.length, node.children.length);
-      subtrees.push(`(${chunks.join(",")}):${node.branchLength}`);
+      subtrees.push(`(${chunks.join(",")})${nodeLabel}:${node.branchLength}`);
     }
   }
 

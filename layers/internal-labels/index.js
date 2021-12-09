@@ -41,7 +41,7 @@ function getTextAnchor(datum) {
   return (datum.inverted) ? "end" : "start";
 }
 
-export default memoise(
+export default () => memoise(
   internalNodesSelector,
   (tree) => tree.getFontSize(),
   (tree) => tree.getFontFamily(),

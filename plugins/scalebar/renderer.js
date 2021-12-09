@@ -18,7 +18,7 @@ const canvasCentreSelector = memoise(
   }
 );
 
-export default memoise(
+export default () => memoise(
   scalebarOptionsSelector,
   (tree) => tree.getBranchScale(),
   (tree) => tree.getScale(),

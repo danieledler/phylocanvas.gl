@@ -30,7 +30,7 @@ import textPositionAccessorSelector from "./text-position-accessor";
 
 import LabelsLayer from "./labels-layer";
 
-export default memoise(
+export default () => memoise(
   labelledNodesSelector,
   (tree) => tree.getFontSize(),
   (tree) => tree.getFontFamily(),

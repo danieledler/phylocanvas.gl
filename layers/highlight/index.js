@@ -29,7 +29,7 @@ import colourToRGBA from "../../utils/colour-to-rgba";
 import haloSizeSelector from "../selection/halo-size";
 import highlightedNodesSelector from "./highlighted-nodes";
 
-export default memoise(
+export default () => memoise(
   highlightedNodesSelector,
   (tree) => colourToRGBA(tree.props.highlightColour ?? defaults.highlightColour),
   (tree) => tree.props.haloWidth || defaults.haloWidth,

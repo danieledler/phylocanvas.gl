@@ -33,7 +33,7 @@ const getIcon = (node) => !node.fillColour.isTransparent && node.shape;
 const getPosition = (node) => [ node.x, node.y ];
 const getColor = (node) => node.fillColour;
 
-export default memoise(
+export default () => memoise(
   visibleLeafNodesSelector,
   (tree) => tree.getNodeSize(),
   (tree) => tree.props.showShapeBorders,

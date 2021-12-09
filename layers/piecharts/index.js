@@ -28,7 +28,7 @@ import slicesDataSelector from "./slices-data";
 
 import CircleSectorLayer from "./circle-sector-layer";
 
-export default memoise(
+export default () => memoise(
   slicesDataSelector,
   (tree) => tree.getNodeSize(),
   (tree) => tree.props.showShapeBorders,

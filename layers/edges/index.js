@@ -25,7 +25,7 @@ import colourAccessorSelector from "./colour-accessor";
 
 import EdgesLayer from "./edges-layer";
 
-export default memoise(
+export default () => memoise(
   (tree) => tree.getGraphAfterLayout(),
   (tree) => tree.getTreeType(),
   (tree) => tree.getStrokeWidth(),

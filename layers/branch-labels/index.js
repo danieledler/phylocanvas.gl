@@ -37,7 +37,7 @@ function getFixedText(datum) {
   return datum.branchLength?.toFixed(4);
 }
 
-export default memoise(
+export default () => memoise(
   internalNodesSelector,
   (tree) => tree.getFontSize(),
   (tree) => tree.getFontFamily(),
