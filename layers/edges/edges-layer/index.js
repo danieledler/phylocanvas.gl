@@ -31,7 +31,9 @@ export default class EdgesLayer extends CompositeLayer {
 
   updateState({ props, changeFlags }) {
     if (changeFlags.dataChanged) {
-      const updater = {};
+      const updater = {
+        roots: [ props.data.root ],
+      };
 
       updater.nodes = [];
       for (let i = props.data.firstIndex + 1; i < props.data.lastIndex; i++) {
@@ -62,11 +64,12 @@ export default class EdgesLayer extends CompositeLayer {
   }
 
   renderLayers() {
-    const { nodes } = this.state;
+    const { nodes, roots } = this.state;
 
     const layers = [];
 
-    if (this.props.treeType === TreeTypes.Rectangular) {
+    if (this.props.treeType === TreeTypes.Rectangular)
+    {
       layers.push(
         new LineLayer({
           data: nodes,
@@ -92,8 +95,8 @@ export default class EdgesLayer extends CompositeLayer {
         }),
       );
     }
-
-    else if (this.props.treeType === TreeTypes.Hierarchical) {
+    else if (this.props.treeType === TreeTypes.Hierarchical)
+    {
       layers.push(
         new LineLayer({
           data: nodes,
@@ -119,8 +122,8 @@ export default class EdgesLayer extends CompositeLayer {
         }),
       );
     }
-
-    else if (this.props.treeType === TreeTypes.Diagonal || this.props.treeType === TreeTypes.Radial) {
+    else if (this.props.treeType === TreeTypes.Diagonal || this.props.treeType === TreeTypes.Radial)
+    {
       layers.push(
         new LineLayer({
           data: nodes,
@@ -134,8 +137,8 @@ export default class EdgesLayer extends CompositeLayer {
         }),
       );
     }
-
-    else if (this.props.treeType === TreeTypes.Circular) {
+    else if (this.props.treeType === TreeTypes.Circular)
+    {
       const { nodesWithChldren } = this.state;
       layers.push(
         new LineLayer({
@@ -161,6 +164,37 @@ export default class EdgesLayer extends CompositeLayer {
           getEndAngle: (x) => x.children[x.children.length - 1].angle,
           getStartAngle: (x) => x.children[0].angle,
           getRadius: (x) => x.dist,
+        }),
+      );
+    }
+
+    if (this.props.treeType === TreeTypes.Rectangular || this.props.treeType === TreeTypes.Diagonal)
+    {
+      layers.push(
+        new LineLayer({
+          data: roots,
+          getColor: this.props.getColor,
+          getWidth: this.props.lineWidth,
+          id: "edges-root-line",
+          pickable: true,
+          updateTriggers: this.props.updateTriggers,
+          getSourcePosition: (node) => [ node.x, node.y ],
+          getTargetPosition: (node) => [ node.x - 10, node.y ],
+        }),
+      );
+    }
+    else if (this.props.treeType === TreeTypes.Hierarchical)
+    {
+      layers.push(
+        new LineLayer({
+          data: roots,
+          getColor: this.props.getColor,
+          getWidth: this.props.lineWidth,
+          id: "edges-root-line",
+          pickable: true,
+          updateTriggers: this.props.updateTriggers,
+          getSourcePosition: (node) => [ node.x, node.y ],
+          getTargetPosition: (node) => [ node.x, node.y - 10 ],
         }),
       );
     }
