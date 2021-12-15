@@ -83,7 +83,13 @@ const labelledLeafNodesSelector = memoise(
     leavesPerLabel,
   ) => {
     if (leavesPerLabel <= 1) {
-      return [ ...graph.leaves ];
+      const nodesWithLabels = [];
+      for (const node of graph.leaves) {
+        if (node.label) {
+          nodesWithLabels.push(node);
+        }
+      }
+      return nodesWithLabels;
     }
 
     const lastIndex = (
