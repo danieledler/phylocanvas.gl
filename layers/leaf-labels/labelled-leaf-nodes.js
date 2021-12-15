@@ -101,7 +101,9 @@ const labelledLeafNodesSelector = memoise(
     for (let index = 0; index < graph.leaves.length; index++) {
       if (index < lastIndex && index % leavesPerLabel === 0) {
         const node = graph.leaves[index];
-        nodesWithLabels.push(node);
+        if (node.label) {
+          nodesWithLabels.push(node);
+        }
       }
     }
 
