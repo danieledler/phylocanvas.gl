@@ -32,7 +32,7 @@ import MetadataLayer from "./metadata-layer";
 export default () => memoise(
   blocksDataSelector,
   (tree) => tree.getBlockSize(),
-  (tree) => tree.getStepScale(),
+  (tree) => tree.getStepScale() * tree.getScale(),
   headersDataSelector,
   (tree) => tree.getFontFamily(),
   fontSizeSelector,
