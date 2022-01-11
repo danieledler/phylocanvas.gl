@@ -21,6 +21,11 @@
 
 import zoomToScale from "../utils/zoom-to-scale";
 
-export default function getScale() {
-  return this.props.fixedScale ?? zoomToScale(this.getZoom());
+export default function getScale(igroneFixedScale = false) {
+  if (igroneFixedScale) {
+    return zoomToScale(this.getZoom());
+  }
+  else {
+    return this.props.fixedScale ?? zoomToScale(this.getZoom());
+  }
 }
