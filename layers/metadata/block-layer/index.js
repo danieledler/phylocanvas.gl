@@ -55,6 +55,17 @@ export default class BlockLayer extends ScatterplotLayer {
     });
   }
 
+  draw({ uniforms }) {
+    const {
+      maxSizeRatio,
+    } = this.props;
+
+    this.state.model
+      .setUniforms({ maxSizeRatio });
+
+    super.draw({ uniforms });
+  }
+
   _getModel(gl) {
     // a square that minimally cover the unit circle
     const positions = [ -1, -1, -1, 1, 1, 1, 1, -1 ];

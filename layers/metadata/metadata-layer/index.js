@@ -40,7 +40,7 @@ export default class MetadataLayer extends CompositeLayer {
         getIcon: () => "square",
         getPixelOffset: this.props.getPixelOffset,
         getRadius: this.props.blockSize / 2,
-        getSize: this.props.blockSize,
+        maxSizeRatio: (!this.props.isOrthogonal || (this.props.stepSize > this.props.blockSize)) ? 1.0 : (this.props.stepSize / this.props.blockSize),
         highlightColor,
         iconAtlas: iconAtlas.image,
         iconMapping: iconAtlas.mapping,

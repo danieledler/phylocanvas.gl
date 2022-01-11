@@ -40,9 +40,8 @@ export default memoise(
   ) => {
     const data = [];
 
-    for (let i = graph.firstIndex; i < graph.lastIndex; i++) {
-      const node = graph.preorderTraversal[i];
-      if (node.isLeaf && node.shape && !node.isHidden && (node.id in metadataValues)) {
+    for (const node of graph.leaves) {
+      if (node.shape && !node.isHidden && (node.id in metadataValues)) {
 
         const nodeMetadata = metadataValues[node.id];
 

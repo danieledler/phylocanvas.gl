@@ -21,6 +21,8 @@
 export default `\
 #define SHADER_NAME scatterplot-layer-fragment-shader
 
+uniform float maxSizeRatio;
+
 precision highp float;
 
 uniform bool filled;
@@ -41,6 +43,15 @@ void main(void) {
   // if (inCircle == 0.0) {
   //   discard;
   // }
+
+  if (maxSizeRatio < 1.0) {
+    if (unitPosition.y > maxSizeRatio) {
+      discard;
+    }
+    if (unitPosition.y < -maxSizeRatio) {
+      discard;
+    }
+  }
 
   if (stroked > 0.5) {
     float isLine = smoothedge(innerUnitRadius * outerRadiusPixels, distToCenter);
