@@ -199,11 +199,14 @@ export default function exportSVG() {
     //#region Metadata blocks
 
     const pixelOffset = this.getPixelOffsets().length;
-    const blockSize = this.getBlockSize();
-    const blockRadius = this.getBlockSize() / 2;
+    const blockWidth = this.getBlockSize();
+    const blockHalfWidth = blockWidth / 2;
+    const stepSize = this.getStepScale();
+    const blockHeight = (!this.isOrthogonal() || (stepSize > blockWidth)) ? blockWidth : stepSize;
+    const blockHalfHeight = blockHeight / 2;
     const blocks = blocksDataMemo(this);
     for (const datum of blocks) {
-      svg.push(`<rect x="${datum.position[0] + ((datum.offsetX + pixelOffset) * Math.cos(datum.node.angle)) - blockRadius}" y="${datum.position[1] + ((datum.offsetX + pixelOffset) * Math.sin(datum.node.angle)) - blockRadius}" width="${blockSize}" height="${blockSize}" fill="${colourArrayToCssRGBA(datum.colour)}" />\n`);
+      svg.push(`<rect x="${datum.position[0] + ((datum.offsetX + pixelOffset) * Math.cos(datum.node.angle)) - blockHalfWidth}" y="${datum.position[1] + ((datum.offsetX + pixelOffset) * Math.sin(datum.node.angle)) - blockHalfHeight}" width="${blockWidth}" height="${blockHeight}" fill="${colourArrayToCssRGBA(datum.colour)}" />\n`);
     }
 
     //#endregion
