@@ -50,7 +50,7 @@ export default () => memoise(
       data: slicesData,
       getLineColor: borderColour,
       getLineWidth: showShapeBorders ? shapeBorderWidth : 0,
-      getPosition: (slice) => [ slice.node.x * scale, slice.node.y * scale ],
+      getPosition: (slice) => [ slice.node.x, slice.node.y ],
       getFillColor: (slice) => slice.colour,
       getCentrePoint: (edge) => [ edge.rootX, edge.rootY ],
       getRadius: (slice) => nodeRadius + (slice.node.ratio * nodeRadius),
