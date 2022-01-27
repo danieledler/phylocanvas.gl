@@ -47,24 +47,16 @@ const rotateNodesMemo = memoise(
   (nodes, rotatedIds) => {
     const rotatedIdsSet = new Set(rotatedIds || []);
 
-    if (nodes.rotatedIds) {
-      for (const id of nodes.rotatedIds) {
-        const node = nodes.ids[id];
-        if (rotatedIdsSet.has(node.id)) {
-          continue;
-        }
+    for (let i = 0; i < nodes.postorderTraversal.length; i++) {
+      const node = nodes.preorderTraversal[i];
+      if (node.isRotated && !rotatedIdsSet.has(node.id)) {
         rotateSubtree(nodes, node);
         node.isRotated = false;
       }
-    }
-
-    for (const id of rotatedIdsSet) {
-      const node = nodes.ids[id];
-      if (node.isRotated) {
-        continue;
+      else if (!node.isRotated && rotatedIdsSet.has(node.id)) {
+        rotateSubtree(nodes, node);
+        node.isRotated = true;
       }
-      rotateSubtree(nodes, node);
-      node.isRotated = true;
     }
 
     return rotatedIdsSet;
