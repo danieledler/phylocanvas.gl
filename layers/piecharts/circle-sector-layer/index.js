@@ -29,22 +29,20 @@ class CircleSectorLayer extends ScatterplotLayer {
         "vs:#decl": `
           attribute float instanceStartAngle;
           attribute float instanceEndAngle;
-          varying vec2 sectorStart;
-          varying vec2 sectorEnd;        
+          varying float startAngle;
+          varying float endAngle;
         `,
         "vs:#main-start": `
-          sectorStart = vec2(cos(instanceStartAngle), sin(instanceStartAngle));
-          sectorEnd = vec2(cos(instanceEndAngle), sin(instanceEndAngle));              
-        `,
+          startAngle = instanceStartAngle ;
+          endAngle = instanceEndAngle ;
+      `,
         "fs:#decl": `
-          varying vec2 sectorStart;
-          varying vec2 sectorEnd;        
-        `,
+          varying float startAngle;
+          varying float endAngle;
+      `,
         "fs:DECKGL_FILTER_COLOR": `
-          if (-sectorStart.x * geometry.uv.y + sectorStart.y * geometry.uv.x > 0.0) {
-            discard;
-          }
-          if (-sectorEnd.x * geometry.uv.y + sectorEnd.y * geometry.uv.x < 0.0) {
+          float angle = atan(-geometry.uv.x, geometry.uv.y) + 3.1415926535897932384626433832795;
+          if (angle < startAngle || angle > endAngle) {
             discard;
           }
         `,
