@@ -52,7 +52,7 @@ export default memoise(
         }
 
         totalLeaves += numberOfActiveLeaves;
-        let startAngle = 0;
+        let startAngle = Angles.Degrees0;
         for (const [ colour, count ] of slices.entries()) {
           const ratio = count / numberOfActiveLeaves;
           const endAngle = startAngle + (Angles.Degrees360 * ratio);
