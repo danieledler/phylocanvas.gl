@@ -206,7 +206,10 @@ export default function exportSVG() {
     const blockHalfHeight = blockHeight / 2;
     const blocks = blocksDataMemo(this);
     for (const datum of blocks) {
-      svg.push(`<rect x="${datum.position[0] + ((datum.offsetX + pixelOffset) * Math.cos(datum.node.angle)) - blockHalfWidth}" y="${datum.position[1] + ((datum.offsetX + pixelOffset) * Math.sin(datum.node.angle)) - blockHalfHeight}" width="${blockWidth}" height="${blockHeight}" fill="${colourArrayToCssRGBA(datum.colour)}" />\n`);
+      const degrees = ((datum.node.angle / Angles.Degrees360) * 360) + (datum.node.inverted ? 180 : 0);
+      const x = datum.position[0] + ((datum.offsetX + pixelOffset) * Math.cos(datum.node.angle)) - blockHalfWidth;
+      const y = datum.position[1] + ((datum.offsetX + pixelOffset) * Math.sin(datum.node.angle)) - blockHalfHeight;
+      svg.push(`<rect x="${x}" y="${y}" width="${blockWidth}" height="${blockHeight}" transform="rotate(${degrees},${x},${y})" fill="${colourArrayToCssRGBA(datum.colour)}" />\n`);
     }
 
     //#endregion
