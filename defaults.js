@@ -7,6 +7,8 @@ export default Object.freeze({
   blockPadding: 4,
   blocks: [],
   blockSize: 16,
+  branchLengthsDigits: 4,
+  branchLengthsFormat: null,
   branchZoom: 0,
   centre: [ 0.5, 0.5 ],
   collapsedIds: EmptyArray,

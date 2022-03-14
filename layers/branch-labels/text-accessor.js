@@ -19,50 +19,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import { TextLayer } from "@deck.gl/layers";
-
-import fontColourSelector from "./font-colour";
-import internalNodesSelector from "./internal-nodes";
-import pixelOffsetAccessorSelector from "./pixel-offset-accessor";
-import positionAccessorSelector from "./position-accessor";
-import textAccessorMemo from "./text-accessor";
-
-import nodeAngleInDegrees from "../../utils/node-angle-in-degrees";
 import memoise from "../../utils/memoise";
 
-export default () => memoise(
-  internalNodesSelector,
-  (tree) => tree.getFontSize(),
-  (tree) => tree.getFontFamily(),
-  fontColourSelector,
-  pixelOffsetAccessorSelector,
-  positionAccessorSelector,
-  textAccessorMemo,
+import defaults from "../../defaults";
+
+export default memoise(
+  (tree) => tree.props.branchLengthsFormat ?? defaults.branchLengthsFormat,
+  (tree) => tree.props.branchLengthsDigits ?? defaults.branchLengthsDigits,
   (
-    internalNodes,
-    fontSize,
-    fontFamily,
-    fontColour,
-    pixelOffsetAccessor,
-    positionAccessor,
-    textAccessor,
+    format,
+    digits,
   ) => {
-    const layer = new TextLayer({
-      data: internalNodes,
-      fontFamily,
-      getAngle: nodeAngleInDegrees,
-      getColor: fontColour,
-      getPixelOffset: pixelOffsetAccessor,
-      getPosition: positionAccessor,
-      getSize: fontSize * 0.6,
-      getText: textAccessor,
-      getTextAnchor: "middle",
-      id: "branch-labels",
-      updateTriggers: {
-        getPixelOffset: pixelOffsetAccessor,
-        getText: textAccessor,
-      },
-    });
-    return layer;
+    if (format === "decimal") {
+      return (datum) => datum.branchLength?.toFixed(digits);
+    }
+
+    if (format === "scientific") {
+      return (datum) => datum.branchLength?.toExponential(digits);
+    }
+
+    return (datum) => datum.branchLength?.toString();
   }
 );
