@@ -23,8 +23,10 @@ import memoise from "../../utils/memoise";
 
 const internalLabelsMemo = memoise(
   (tree) => tree.getGraphAfterLayout(),
+  (tree) => tree.props.internalLabelsFilterRange,
   (
     graph,
+    internalLabelsFilterRange,
   ) => {
     const labels = [];
 
@@ -38,7 +40,18 @@ const internalLabelsMemo = memoise(
         &&
         node.name
       ) {
-        labels.push(node);
+        if (internalLabelsFilterRange) {
+          if (
+            node.name >= internalLabelsFilterRange[0]
+            &&
+            node.name <= internalLabelsFilterRange[1]
+          ) {
+            labels.push(node);
+          }
+        }
+        else {
+          labels.push(node);
+        }
       }
 
       // skip collapsed sub-trees
