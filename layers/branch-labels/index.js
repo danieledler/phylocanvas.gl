@@ -32,7 +32,7 @@ import memoise from "../../utils/memoise";
 
 export default () => memoise(
   internalNodesSelector,
-  (tree) => tree.getFontSize(),
+  (tree) => tree.props.branchLabelsFontSize ?? tree.getFontSize() * 0.6,
   (tree) => tree.getFontFamily(),
   fontColourSelector,
   pixelOffsetAccessorSelector,
@@ -54,7 +54,7 @@ export default () => memoise(
       getColor: fontColour,
       getPixelOffset: pixelOffsetAccessor,
       getPosition: positionAccessor,
-      getSize: fontSize * 0.6,
+      getSize: fontSize,
       getText: textAccessor,
       getTextAnchor: "middle",
       id: "branch-labels",
