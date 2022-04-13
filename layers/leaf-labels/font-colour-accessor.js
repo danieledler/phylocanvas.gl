@@ -24,13 +24,13 @@ import defaults from "../../defaults";
 import memoise from "../../utils/memoise";
 import colourToRGBA from "../../utils/colour-to-rgba";
 
-const fontColourSelector = memoise(
+const fontColourMemo = memoise(
   (tree) => tree.props.fontColour || defaults.fontColour,
   colourToRGBA,
 );
 
 export default function (tree) {
-  const fontColour = fontColourSelector(tree);
+  const fontColour = fontColourMemo(tree);
   if (tree.props.styleLeafLabels || defaults.styleLeafLabels) {
     return (node) => node.fillColour ?? fontColour;
   }

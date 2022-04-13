@@ -24,10 +24,10 @@ import defaults from "../../defaults";
 import memoise from "../../utils/memoise";
 import colourToRGBA from "../../utils/colour-to-rgba";
 
-import lineColourSelector from "./line-colour";
+import lineColourMemo from "./line-colour";
 
 export default memoise(
-  lineColourSelector,
+  lineColourMemo,
   (tree) => tree.props.styleNodeEdges ?? defaults.styleNodeEdges,
   (tree) => colourToRGBA(tree.props.highlightColour ?? defaults.highlightColour),
   (tree) => tree.getHighlightedNode(),

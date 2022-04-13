@@ -19,18 +19,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import labelledLeafNodesSelector from "../layers/leaf-labels/labelled-leaf-nodes";
-import textPositionAccessorSelector from "../layers/leaf-labels/text-position-accessor";
+import labelledLeafNodesMemo from "../layers/leaf-labels/labelled-leaf-nodes";
+import textPositionAccessorMemo from "../layers/leaf-labels/text-position-accessor";
 
-import shapeBorderWidthSelector from "../layers/shapes/shape-border-width";
-import shapeBorderColourSelector from "../layers/shapes/border-colour";
+import shapeBorderWidthMemo from "../layers/shapes/shape-border-width";
+import shapeBorderColourMemo from "../layers/shapes/border-colour";
 
 import blocksDataMemo from "../layers/metadata/blocks-data";
 import headersDataMemo from "../layers/metadata/headers-data";
 import pixelOffsetAccessorMemo from "../layers/metadata/pixel-offset-accessor";
 import metadataHeaderFontSizeMemo from "../layers/metadata/font-size";
 
-import lineColourSelector from "../layers/edges/line-colour";
+import lineColourMemo from "../layers/edges/line-colour";
 
 import drawVectorShape from "../utils/draw-vector-shape";
 
@@ -94,7 +94,7 @@ export default function exportSVG() {
 
     //#region Draw lines
     const lineWidth = this.getStrokeWidth();
-    const lineColour = colourArrayToCssRGBA(lineColourSelector(this));
+    const lineColour = colourArrayToCssRGBA(lineColourMemo(this));
 
     svg.push(`<g stroke="${lineColour}" stroke-width="${lineWidth}" >\n`);
 
@@ -145,8 +145,8 @@ export default function exportSVG() {
     let shapeBorderWidth = "";
     let shapeBorderColour = "";
     if (showShapeBorders) {
-      shapeBorderWidth = shapeBorderWidthSelector(this);
-      shapeBorderColour = colourArrayToCssRGBA(shapeBorderColourSelector(this));
+      shapeBorderWidth = shapeBorderWidthMemo(this);
+      shapeBorderColour = colourArrayToCssRGBA(shapeBorderColourMemo(this));
     }
 
     svg.push("<g>\n");
@@ -179,8 +179,8 @@ export default function exportSVG() {
     //#region Draw labels
 
     if (this.props.showLabels && this.props.showLeafLabels) {
-      const labelledLeafNodes = labelledLeafNodesSelector(this);
-      const textPositionAccessor = textPositionAccessorSelector(this);
+      const labelledLeafNodes = labelledLeafNodesMemo(this);
+      const textPositionAccessor = textPositionAccessorMemo(this);
       const fontFamily = this.getFontFamily();
       const fontSize = this.getFontSize();
       svg.push(`<g font-family="${fontFamily.replace(/"/g, "'")}" font-size="${fontSize}">\n`);

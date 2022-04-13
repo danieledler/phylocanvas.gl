@@ -21,7 +21,7 @@
 
 import memoise from "../../utils/memoise";
 
-import colourAccessorSelector from "./colour-accessor";
+import colourAccessorMemo from "./colour-accessor";
 
 import EdgesLayer from "./edges-layer";
 
@@ -29,7 +29,7 @@ export default () => memoise(
   (tree) => tree.getGraphAfterLayout(),
   (tree) => tree.getTreeType(),
   (tree) => tree.getStrokeWidth(),
-  colourAccessorSelector,
+  colourAccessorMemo,
   (
     graph,
     treeType,

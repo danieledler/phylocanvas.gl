@@ -21,14 +21,14 @@
 
 import memoise from "../../utils/memoise";
 
-function totalSubtreeLengthSelector(tree) {
+function totalSubtreeLengthMemo(tree) {
   const graph = tree.getGraphAfterLayout();
   return graph.root.totalSubtreeLength;
 }
 
 export default memoise(
   (tree) => tree.getAlignLeafLabels(),
-  totalSubtreeLengthSelector,
+  totalSubtreeLengthMemo,
   (tree) => tree.getBranchScale(),
   (tree) => tree.getScale(),
   (tree) => (tree.getShowShapes() ? tree.getNodeSize() : 0),

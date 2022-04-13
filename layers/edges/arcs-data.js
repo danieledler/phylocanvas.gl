@@ -23,7 +23,7 @@ import { TreeTypes } from "../../constants";
 
 import memoise from "../../utils/memoise";
 
-const arcsDataSelector = memoise(
+const arcsDataMemo = memoise(
   (tree) => tree.getGraphAfterLayout(),
   (tree) => tree.getTreeType(),
   (
@@ -59,6 +59,6 @@ const arcsDataSelector = memoise(
     return arcs;
   }
 );
-arcsDataSelector.displayName = "arcs-data";
+arcsDataMemo.displayName = "arcs-data";
 
-export default arcsDataSelector;
+export default arcsDataMemo;

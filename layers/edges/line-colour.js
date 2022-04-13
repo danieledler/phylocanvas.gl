@@ -21,11 +21,11 @@
 
 import memoise from "../../utils/memoise";
 
-import lineAlphaSelector from "./line-alpha";
+import lineAlphaMemo from "./line-alpha";
 
-const lineColourSelector = memoise(
+const lineColourMemo = memoise(
   (tree) => tree.getStrokeColour(),
-  lineAlphaSelector,
+  lineAlphaMemo,
   (
     strokeColour,
     lineAlpha,
@@ -40,4 +40,4 @@ const lineColourSelector = memoise(
   }
 );
 
-export default lineColourSelector;
+export default lineColourMemo;

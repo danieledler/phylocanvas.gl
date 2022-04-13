@@ -21,9 +21,9 @@
 
 import memoise from "../../utils/memoise";
 
-import visibleLeafNodesSelector from "./visible-leaf-nodes";
-import borderColourSelector from "./border-colour";
-import shapeBorderWidthSelector from "./shape-border-width";
+import visibleLeafNodesMemo from "./visible-leaf-nodes";
+import borderColourMemo from "./border-colour";
+import shapeBorderWidthMemo from "./shape-border-width";
 
 import ShapesLayer from "./shapes-layer";
 
@@ -34,11 +34,11 @@ const getPosition = (node) => [ node.x, node.y ];
 const getColor = (node) => node.fillColour;
 
 export default () => memoise(
-  visibleLeafNodesSelector,
+  visibleLeafNodesMemo,
   (tree) => tree.getNodeSize(),
   (tree) => tree.props.showShapeBorders,
-  shapeBorderWidthSelector,
-  borderColourSelector,
+  shapeBorderWidthMemo,
+  borderColourMemo,
   (
     leafNodes,
     nodeSize,

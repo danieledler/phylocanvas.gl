@@ -22,21 +22,21 @@
 import memoise from "../../utils/memoise";
 import colourToRGBA from "../../utils/colour-to-rgba";
 
-import fontSizeSelector from "./font-size";
-import blocksDataSelector from "./blocks-data";
-import headersDataSelector from "./headers-data";
-import pixelOffsetAccessorSelector from "./pixel-offset-accessor";
+import fontSizeMemo from "./font-size";
+import blocksDataMemo from "./blocks-data";
+import headersDataMemo from "./headers-data";
+import pixelOffsetAccessorMemo from "./pixel-offset-accessor";
 
 import MetadataLayer from "./metadata-layer";
 
 export default () => memoise(
-  blocksDataSelector,
+  blocksDataMemo,
   (tree) => tree.getBlockSize(),
   (tree) => tree.getStepScale() * tree.getScale(),
-  headersDataSelector,
+  headersDataMemo,
   (tree) => tree.getFontFamily(),
-  fontSizeSelector,
-  pixelOffsetAccessorSelector,
+  fontSizeMemo,
+  pixelOffsetAccessorMemo,
   (tree) => tree.hasMetadataHeaders(),
   (tree) => tree.isOrthogonal(),
   (

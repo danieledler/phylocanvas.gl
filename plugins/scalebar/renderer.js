@@ -1,11 +1,11 @@
 import memoise from "../../utils/memoise";
 
 import ScalebarLayer from "./scalebar-layer";
-import scalebarOptionsSelector from "./options";
+import scalebarOptionsMemo from "./options";
 
 const LOG10 = Math.log(10);
 
-const canvasCentreSelector = memoise(
+const canvasCentreMemo = memoise(
   (tree) => tree.getCanvasSize(),
   (
     size,
@@ -19,12 +19,12 @@ const canvasCentreSelector = memoise(
 );
 
 export default () => memoise(
-  scalebarOptionsSelector,
+  scalebarOptionsMemo,
   (tree) => tree.getBranchScale(),
   (tree) => tree.getScale(true),
   (tree) => tree.getCanvasSize(),
   (tree) => tree.getFontFamily(),
-  canvasCentreSelector,
+  canvasCentreMemo,
   (tree) => tree.getView().target,
   (
     options,

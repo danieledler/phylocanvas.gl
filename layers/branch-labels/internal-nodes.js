@@ -21,7 +21,7 @@
 
 import memoise from "../../utils/memoise";
 
-const internaNodesSelector = memoise(
+const internaNodesMemo = memoise(
   (tree) => tree.getGraphAfterLayout(),
   (
     graph,
@@ -42,4 +42,4 @@ const internaNodesSelector = memoise(
   }
 );
 
-export default internaNodesSelector;
+export default internaNodesMemo;

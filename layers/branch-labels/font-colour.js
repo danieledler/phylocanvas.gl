@@ -24,9 +24,9 @@ import defaults from "../../defaults";
 import memoise from "../../utils/memoise";
 import colourToRGBA from "../../utils/colour-to-rgba";
 
-const fontColourSelector = memoise(
+const fontColourMemo = memoise(
   (tree) => tree.props.fontColour || defaults.fontColour,
   colourToRGBA,
 );
 
-export default fontColourSelector;
+export default fontColourMemo;

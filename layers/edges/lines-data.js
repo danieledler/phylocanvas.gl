@@ -23,7 +23,7 @@ import { TreeTypes } from "../../constants";
 
 import memoise from "../../utils/memoise";
 
-const linesDataSelector = memoise(
+const linesDataMemo = memoise(
   (tree) => tree.getGraphAfterLayout(),
   (tree) => tree.getTreeType(),
   (
@@ -105,6 +105,6 @@ const linesDataSelector = memoise(
     return lines;
   }
 );
-linesDataSelector.displayName = "lines-data";
+linesDataMemo.displayName = "lines-data";
 
-export default linesDataSelector;
+export default linesDataMemo;

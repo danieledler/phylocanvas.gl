@@ -21,22 +21,22 @@
 
 import { TextLayer } from "@deck.gl/layers";
 
-import fontColourSelector from "./font-colour";
-import internalNodesSelector from "./internal-nodes";
-import pixelOffsetAccessorSelector from "./pixel-offset-accessor";
-import positionAccessorSelector from "./position-accessor";
+import fontColourMemo from "./font-colour";
+import internalNodesMemo from "./internal-nodes";
+import pixelOffsetAccessorMemo from "./pixel-offset-accessor";
+import positionAccessorMemo from "./position-accessor";
 import textAccessorMemo from "./text-accessor";
 
 import nodeAngleInDegrees from "../../utils/node-angle-in-degrees";
 import memoise from "../../utils/memoise";
 
 export default () => memoise(
-  internalNodesSelector,
+  internalNodesMemo,
   (tree) => tree.props.branchLabelsFontSize ?? tree.getFontSize() * 0.6,
   (tree) => tree.getFontFamily(),
-  fontColourSelector,
-  pixelOffsetAccessorSelector,
-  positionAccessorSelector,
+  fontColourMemo,
+  pixelOffsetAccessorMemo,
+  positionAccessorMemo,
   textAccessorMemo,
   (
     internalNodes,

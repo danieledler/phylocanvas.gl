@@ -22,7 +22,7 @@
 import { TreeTypes, Angles } from "../../constants";
 import memoise from "../../utils/memoise";
 
-const leavesPerLabelSelector = memoise(
+const leavesPerLabelMemo = memoise(
   (tree) => tree.getTreeType(),
   (tree) => tree.getGraphAfterLayout(),
   (tree) => tree.getBranchScale(),
@@ -73,10 +73,10 @@ const leavesPerLabelSelector = memoise(
   }
 );
 
-const labelledLeafNodesSelector = memoise(
+const labelledLeafNodesMemo = memoise(
   (tree) => tree.getGraphWithStyles(),
   (tree) => tree.getTreeType(),
-  leavesPerLabelSelector,
+  leavesPerLabelMemo,
   (
     graph,
     type,
@@ -116,6 +116,6 @@ const labelledLeafNodesSelector = memoise(
     return nodesWithLabels;
   }
 );
-labelledLeafNodesSelector.displayName = "labelled-leaf-nodes";
+labelledLeafNodesMemo.displayName = "labelled-leaf-nodes";
 
-export default labelledLeafNodesSelector;
+export default labelledLeafNodesMemo;

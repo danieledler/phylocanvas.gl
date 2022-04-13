@@ -39,7 +39,7 @@ const minScale = 1;
 //   return lineAlpha;
 // }
 
-const lineAlphaSelector = memoise(
+const lineAlphaMemo = memoise(
   (tree) => tree.getScale(),
   (tree) => tree.getMaxScale(),
   (tree) => tree.props.minLineAlpha ?? minAlpha,
@@ -70,7 +70,7 @@ const lineAlphaSelector = memoise(
 
 export default function (tree) {
   if (tree.props.scaleLineAlpha) {
-    return lineAlphaSelector(tree);
+    return lineAlphaMemo(tree);
   }
   else {
     return maxAlpha;

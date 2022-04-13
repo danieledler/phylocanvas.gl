@@ -22,9 +22,9 @@
 import { TextLayer } from "@deck.gl/layers";
 
 import memoise from "../../utils/memoise";
-import fontColourSelector from "./font-colour";
-import internalNodesSelector from "./internal-nodes";
-import pixelOffsetSelector from "./pixel-offset";
+import fontColourMemo from "./font-colour";
+import internalNodesMemo from "./internal-nodes";
+import pixelOffsetMemo from "./pixel-offset";
 
 function getText(datum) {
   return datum.name;
@@ -42,11 +42,11 @@ function getTextAnchor(datum) {
 }
 
 export default () => memoise(
-  internalNodesSelector,
+  internalNodesMemo,
   (tree) => tree.props.internalLabelsFontSize ?? tree.getFontSize(),
   (tree) => tree.getFontFamily(),
-  fontColourSelector,
-  pixelOffsetSelector,
+  fontColourMemo,
+  pixelOffsetMemo,
   (tree) => tree.props.showInternalLabels,
   (
     internalNodes,

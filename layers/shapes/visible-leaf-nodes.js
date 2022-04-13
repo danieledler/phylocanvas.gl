@@ -21,7 +21,7 @@
 
 import memoise from "../../utils/memoise";
 
-const visibleLeafNodesSelector = memoise(
+const visibleLeafNodesMemo = memoise(
   (tree) => tree.getGraphWithStyles(),
   (
     graph,
@@ -35,6 +35,6 @@ const visibleLeafNodesSelector = memoise(
     return visibleNodes;
   },
 );
-visibleLeafNodesSelector.displayName = "visible-leaf-nodes";
+visibleLeafNodesMemo.displayName = "visible-leaf-nodes";
 
-export default visibleLeafNodesSelector;
+export default visibleLeafNodesMemo;

@@ -26,14 +26,14 @@ import defaults from "../../defaults";
 import memoise from "../../utils/memoise";
 import colourToRGBA from "../../utils/colour-to-rgba";
 
-import haloSizeSelector from "./halo-size";
-import selectedNodesSelector from "./selected-nodes";
+import haloSizeMemo from "./halo-size";
+import selectedNodesMemo from "./selected-nodes";
 
 export default () => memoise(
-  selectedNodesSelector,
+  selectedNodesMemo,
   (tree) => colourToRGBA(tree.props.highlightColour || defaults.highlightColour),
   (tree) => tree.props.haloWidth || defaults.haloWidth,
-  haloSizeSelector,
+  haloSizeMemo,
   (
     selectedNodes,
     highlightColour,

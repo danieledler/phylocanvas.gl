@@ -21,7 +21,7 @@
 
 import memoise from "../../utils/memoise";
 
-const internalLabelsSelector = memoise(
+const internalLabelsMemo = memoise(
   (tree) => tree.getGraphAfterLayout(),
   (
     graph,
@@ -50,4 +50,4 @@ const internalLabelsSelector = memoise(
   }
 );
 
-export default internalLabelsSelector;
+export default internalLabelsMemo;
