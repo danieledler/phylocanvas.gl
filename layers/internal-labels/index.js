@@ -43,7 +43,7 @@ function getTextAnchor(datum) {
 
 export default () => memoise(
   internalNodesSelector,
-  (tree) => tree.getFontSize(),
+  (tree) => tree.props.internalLabelsFontSize ?? tree.getFontSize(),
   (tree) => tree.getFontFamily(),
   fontColourSelector,
   pixelOffsetSelector,
