@@ -3,12 +3,10 @@
   "version": "1.52.0",
   "description": "A WebGL-powered JavaScript library for interactive tree visualisation.",
   "main": "dist/phylocanvas.js",
-  "scripts": {
-    "release": "git add . && git commit --all --message='Build' &&  npm version minor && npm publish"
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/cgps/phylocanvas/phylocanvas.gl.git"
+    "url": "git+https://github.com/danieledler/phylocanvas.gl.git"
   },
   "keywords": [
     "phylocanvas",
