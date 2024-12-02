@@ -1,0 +1,36 @@
+{
+  "name": "@phylocanvas/phylocanvas.gl",
+  "version": "1.52.0",
+  "description": "A WebGL-powered JavaScript library for interactive tree visualisation.",
+  "main": "dist/phylocanvas.js",
+  "scripts": {
+    "release": "git add . && git commit --all --message='Build' &&  npm version minor && npm publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/cgps/phylocanvas/phylocanvas.gl.git"
+  },
+  "keywords": [
+    "phylocanvas",
+    "phylo",
+    "phylogeny",
+    "phylogenetic",
+    "tree",
+    "canvas",
+    "newick",
+    "biojs",
+    "webgl"
+  ],
+  "author": "The Centre for Genomic Pathogen Surveillance (CGPS)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://gitlab.com/cgps/phylocanvas/support/-/issues"
+  },
+  "homepage": "https://www.phylocanvas.gl/",
+  "peerDependencies": {
+    "deck.gl": "^8.3.10"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
